@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUÁN NHẬU ONLINE THỨ 6</title>
+    <title>QUÁN NHẬU ONLINE THỨ 6 - REALTIME</title>
+    <!-- Firebase App & Database SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
         :root {
             --bg-dark: #0f0c20;
@@ -30,7 +33,57 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            transition: filter 0.5s ease;
+        }
+
+        /* Modal Chọn Tên */
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-box {
+            background: var(--panel-bg);
+            border: 2px solid var(--neon-pink);
+            box-shadow: 0 0 20px var(--neon-pink);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-box h2 {
+            color: var(--neon-gold);
+            margin-bottom: 15px;
+        }
+
+        .user-select-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-user {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-user:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 10px var(--neon-blue);
         }
 
         /* Header Neon Sign */
@@ -39,9 +92,7 @@
             padding: 15px;
             background: rgba(10, 8, 25, 0.95);
             border-bottom: 2px solid var(--neon-pink);
-            box-shadow: 0 0 20px rgba(ff, 0, 127, 0.4);
-            position: relative;
-            z-index: 10;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
         }
 
         h1.neon-title {
@@ -49,26 +100,13 @@
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow: 
-                0 0 5px #fff,
-                0 0 10px #fff,
-                0 0 20px var(--neon-pink),
-                0 0 30px var(--neon-pink),
-                0 0 40px var(--neon-pink);
-            animation: blink 2s infinite alternate;
+            text-shadow: 0 0 5px #fff, 0 0 20px var(--neon-pink);
         }
 
         .subtitle {
             color: var(--neon-blue);
             font-size: 0.95rem;
             margin-top: 5px;
-            letter-spacing: 1px;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.85; }
-            80% { opacity: 0.95; }
         }
 
         /* Main Container Layout */
@@ -84,19 +122,14 @@
         }
 
         @media (max-width: 1024px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
+            .container { grid-template-columns: 1fr; }
         }
 
-        /* Panel Common Style */
         .panel {
             background: var(--panel-bg);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             display: flex;
             flex-direction: column;
         }
@@ -108,7 +141,6 @@
             padding-bottom: 8px;
             margin-bottom: 12px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
         }
 
@@ -131,12 +163,6 @@
             border-left: 3px solid var(--neon-blue);
         }
 
-        .member-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         .avatar {
             width: 36px;
             height: 36px;
@@ -146,62 +172,31 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.9rem;
-            color: #fff;
         }
 
-        .member-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .member-status {
-            font-size: 0.75rem;
-            color: var(--neon-green);
-        }
-
-        .drunk-meter {
-            font-size: 0.8rem;
-            color: var(--neon-gold);
-            font-weight: bold;
-        }
-
-        /* Main Pub Table Area */
+        /* Main Stage */
         .pub-stage {
             position: relative;
-            background: radial-gradient(circle, rgba(40,30,80,0.6) 0%, rgba(15,12,32,0.9) 100%), url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80') center/cover;
+            background: radial-gradient(circle, rgba(40,30,80,0.6) 0%, rgba(15,12,32,0.9) 100%);
             border-radius: 15px;
             border: 2px solid var(--neon-blue);
-            box-shadow: inset 0 0 30px rgba(0, 243, 255, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
             min-height: 480px;
-            overflow: hidden;
         }
 
-        /* Floating Wish / Toast Banner */
         .toast-banner {
             background: rgba(0, 0, 0, 0.7);
             border: 1px solid var(--neon-gold);
             border-radius: 20px;
             padding: 8px 20px;
-            color: #fff;
             font-size: 0.95rem;
-            max-width: 80%;
             text-align: center;
-            box-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
-            animation: pulse 1.5s infinite alternate;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.03); }
-        }
-
-        /* Wooden Table & Beer Glasses */
         .table-area {
             position: relative;
             width: 320px;
@@ -209,36 +204,14 @@
             background: #4a2c11;
             border-radius: 100px / 60px;
             border: 8px solid #2d1a0a;
-            box-shadow: 0 15px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 20px 0;
-        }
-
-        .beer-glass {
-            font-size: 4rem;
             cursor: pointer;
-            transition: transform 0.1s ease;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
         }
 
-        .beer-glass:active {
-            transform: scale(0.9) rotate(-10deg);
-        }
+        .beer-glass { font-size: 4rem; }
 
-        .cheers-effect {
-            position: absolute;
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--neon-gold);
-            text-shadow: 0 0 10px #ff0000;
-            pointer-events: none;
-            opacity: 0;
-            transition: all 0.5s ease-out;
-        }
-
-        /* Action Buttons Grid */
         .action-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -247,39 +220,18 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
             color: #fff;
             padding: 10px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.2s ease;
         }
 
-        .btn:hover {
-            background: var(--neon-pink);
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
-            transform: translateY(-2deg);
-        }
-
-        .btn:active {
-            transform: translateY(1deg);
-        }
+        .btn:hover { background: var(--neon-pink); }
 
         /* Chat Panel */
-        .chat-box {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -287,7 +239,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            padding-right: 5px;
         }
 
         .msg {
@@ -295,13 +246,11 @@
             border-radius: 8px;
             padding: 8px 12px;
             font-size: 0.85rem;
-            line-height: 1.4;
         }
 
         .msg .author {
             color: var(--neon-blue);
             font-weight: bold;
-            margin-bottom: 2px;
         }
 
         .chat-input-group {
@@ -317,11 +266,6 @@
             border-radius: 6px;
             padding: 8px 10px;
             color: #fff;
-            outline: none;
-        }
-
-        .chat-input:focus {
-            border-color: var(--neon-blue);
         }
 
         .btn-send {
@@ -333,248 +277,159 @@
             font-weight: bold;
             cursor: pointer;
         }
-
-        /* Food Items Display */
-        .food-items {
-            position: absolute;
-            display: flex;
-            gap: 15px;
-            font-size: 1.8rem;
-            bottom: 25px;
-        }
     </style>
 </head>
 <body>
 
+    <!-- Modal chọn danh tính khi bắt đầu -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-box">
+            <h2>CHỌN TÊN ĐỂ VÀO BÀN</h2>
+            <p style="font-size: 0.85rem; color: #ccc;">Vui lòng chọn danh tính của bạn:</p>
+            <div class="user-select-grid" id="user-select-grid"></div>
+        </div>
+    </div>
+
     <header>
         <h1 class="neon-title">🍻 QUÁN NHẬU ONLINE THỨ 6 🍻</h1>
-        <div class="subtitle">Anh em nâng ly - Zô là 100% - Không say không về!</div>
+        <div class="subtitle" id="current-user-display">Chưa nhập bàn nhậu</div>
     </header>
 
     <div class="container">
-        <!-- Left: Members List -->
+        <!-- Thành viên bàn nhậu -->
         <div class="panel">
             <div class="panel-title">
                 <span>Bàn Nhậu Chiến Hữu</span>
-                <span style="font-size: 0.8rem; color: var(--neon-green);" id="online-count">7 Online</span>
+                <span style="font-size: 0.8rem; color: var(--neon-green);" id="online-count">0 Online</span>
             </div>
-            <div class="member-list" id="member-list">
-                <!-- JS auto fill members -->
-            </div>
+            <div class="member-list" id="member-list"></div>
         </div>
 
-        <!-- Center: Main Pub Interactive Area -->
+        <!-- Sân nhậu trung tâm -->
         <div class="pub-stage">
             <div class="toast-banner" id="toast-banner">
-                📢 Thế Vũ: "Thứ 6 rồi anh em ơi, nâng ly 100% nào!"
+                📢 Chọn tên để tham gia bàn nhậu realtime!
             </div>
 
             <div class="table-area" onclick="doCheers()">
-                <div class="beer-glass" id="beer-glass">🍺</div>
-                <div class="cheers-effect" id="cheers-effect">ZÔ 100%! 💥</div>
-                <div class="food-items" id="food-items">
-                    <!-- Dishes will be added here -->
-                </div>
+                <div class="beer-glass">🍺</div>
             </div>
 
             <div class="action-bar">
-                <button class="btn" onclick="doCheers()">
-                    <span>🍻</span> Cụm Ly 100%
-                </button>
-                <button class="btn" onclick="pourBeer()">
-                    <span>🍺</span> Rót Đầy Ly
-                </button>
-                <button class="btn" onclick="orderFood()">
-                    <span>🍖</span> Gọi Mồi Ngon
-                </button>
-                <button class="btn" onclick="singKaraoke()">
-                    <span>🎤</span> Hát Karaoke
-                </button>
+                <button class="btn" onclick="doCheers()">🍻 Cụm Ly 100%</button>
+                <button class="btn" onclick="sendAction('rót đầy ly bia! 🍺')">🍺 Rót Đầy Ly</button>
+                <button class="btn" onclick="sendAction('gọi thêm mồi ngon! 🍗')">🍖 Gọi Mồi Ngon</button>
+                <button class="btn" onclick="sendAction('bật Karaoke hát sương sương! 🎤')">🎤 Hát Karaoke</button>
             </div>
         </div>
 
-        <!-- Right: Chat Box -->
-        <div class="panel chat-box">
-            <div class="panel-title">Trò Chuyện Quán Nhậu</div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="msg"><span class="author">Hệ thống:</span> Chào mừng anh em đến với QUÁN NHẬU ONLINE THỨ 6!</div>
-            </div>
+        <!-- Chat Realtime -->
+        <div class="panel">
+            <div class="panel-title">Trò Chuyện Realtime</div>
+            <div class="chat-messages" id="chat-messages"></div>
             <div class="chat-input-group">
-                <input type="text" class="chat-input" id="chat-input" placeholder="Nhập lời chúc / Thách rượu..." onkeypress="handleKeyPress(event)">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Nhập tin nhắn..." onkeypress="handleKeyPress(event)">
                 <button class="btn-send" onclick="sendMessage()">Gửi</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Data Members
-        const members = [
-            { name: "Thanh Quí", drunk: 20 },
-            { name: "Quang Hoà", drunk: 20 },
-            { name: "Lê Hoàng", drunk: 20 },
-            { name: "Thế Vũ", drunk: 20 },
-            { name: "Thanh Chính", drunk: 20 },
-            { name: "Trọng Tình", drunk: 20 },
-            { name: "Đình Dũng", drunk: 20 }
-        ];
+        // Cấu hình Firebase Realtime Database
+        const firebaseConfig = {
+            databaseURL: "https://quan-nhau-online-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        const foods = ["🍗", "🥩", "🦪", "🦐", "🦑", "🥜", "🍢"];
+        const memberNames = ["Thanh Quí", "Quang Hoà", "Lê Hoàng", "Thế Vũ", "Thanh Chính", "Trọng Tình", "Đình Dũng"];
+        let currentUser = null;
 
-        const sampleChats = [
-            "Zô 100% anh em ơi!",
-            "Lên ly đi Quang Hoà ơi!",
-            "Thứ 6 xả giàn thôi các chiến hữu!",
-            "Rót đầy ly cho Thanh Quí giúp em!",
-            "Hôm nay không say không về nha!",
-            "Lê Hoà đâu rồi, lên tiếng cái coi!",
-            "Đình Dũng làm ly 50% trước đi!"
-        ];
+        // Tạo nút chọn danh tính
+        const userGrid = document.getElementById('user-select-grid');
+        memberNames.forEach(name => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-user';
+            btn.innerText = name;
+            btn.onclick = () => selectUser(name);
+            userGrid.appendChild(btn);
+        });
 
-        let totalDrunkLevel = 0;
+        function selectUser(name) {
+            currentUser = name;
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('current-user-display').innerText = `Tài khoản: ${currentUser} (Đang Online)`;
+            
+            // Đăng ký trạng thái online lên Firebase
+            const userRef = db.ref('presence/' + currentUser);
+            userRef.set({ name: currentUser, online: true, drunk: 0 });
+            userRef.onDisconnect().remove();
 
-        // Sound generator via Web Audio API
-        function playClinkSound() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1200, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.3);
-                
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
-                osc.start();
-                osc.stop(ctx.currentTime + 0.3);
-            } catch(e) {}
+            // Thông báo vào bàn
+            db.ref('chats').push({ author: "Hệ thống", text: `${currentUser} vừa vào bàn nhậu! 🍻` });
         }
 
-        // Render member list
-        function renderMembers() {
+        // Lắng nghe danh sách Online
+        db.ref('presence').on('value', snapshot => {
+            const data = snapshot.val() || {};
+            const activeList = Object.keys(data);
+            document.getElementById('online-count').innerText = `${activeList.length} Online`;
+
             const listEl = document.getElementById('member-list');
-            listEl.innerHTML = members.map(m => `
-                <div class="member-card">
-                    <div class="member-info">
-                        <div class="avatar">${m.name.charAt(0)}</div>
-                        <div>
-                            <div class="member-name">${m.name}</div>
-                            <div class="member-status">● Đang nhậu</div>
+            listEl.innerHTML = memberNames.map(name => {
+                const isOnline = activeList.includes(name);
+                return `
+                    <div class="member-card" style="opacity: ${isOnline ? 1 : 0.4}">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="avatar">${name.charAt(0)}</div>
+                            <div>
+                                <div style="font-weight:bold">${name}</div>
+                                <div style="font-size:0.75rem; color:${isOnline ? 'var(--neon-green)' : '#888'}">
+                                    ${isOnline ? '● Đang nhậu' : '○ Vắng mặt'}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="drunk-meter">🍺 ${m.drunk}%</div>
-                </div>
-            `).join('');
-        }
+                `;
+            }).join('');
+        });
 
-        // Action: Cheers 100%
-        function doCheers() {
-            playClinkSound();
-
-            const effect = document.getElementById('cheers-effect');
-            effect.style.opacity = '1';
-            effect.style.transform = 'translateY(-20px) scale(1.2)';
-
-            setTimeout(() => {
-                effect.style.opacity = '0';
-                effect.style.transform = 'translateY(0) scale(1)';
-            }, 600);
-
-            // Increase random member drunk level
-            const randIdx = Math.floor(Math.random() * members.length);
-            members[randIdx].drunk = Math.min(100, members[randIdx].drunk + 10);
-            totalDrunkLevel = Math.min(100, totalDrunkLevel + 3);
-
-            renderMembers();
-            applyDrunkEffect();
-
-            // Auto toast
-            const speaker = members[randIdx].name;
-            document.getElementById('toast-banner').innerText = `📢 ${speaker}: "Anh em cụm ly Zô 100% nào!"`;
-        }
-
-        // Action: Pour Beer
-        function pourBeer() {
-            const glass = document.getElementById('beer-glass');
-            glass.style.transform = 'scale(1.2) rotate(15deg)';
-            setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 300);
-
-            addChatMessage("Hệ thống", "Đã rót đầy ly bia mát lạnh! 🍺");
-        }
-
-        // Action: Order Food
-        function orderFood() {
-            const foodContainer = document.getElementById('food-items');
-            const randFood = foods[Math.floor(Math.random() * foods.length)];
-            
-            if (foodContainer.children.length > 5) {
-                foodContainer.innerHTML = '';
-            }
-
-            const item = document.createElement('span');
-            item.innerText = randFood;
-            foodContainer.appendChild(item);
-
-            addChatMessage("Phục vụ", `Vừa lên món ngon ${randFood} cho bàn nhậu!`);
-        }
-
-        // Action: Sing Karaoke
-        function singKaraoke() {
-            const songs = [
-                "Cắt Đôi Nỗi Sầu - Hát cùng anh em!",
-                "Hãy Ra Đây Mà Xem - Zô 100%!",
-                "Anh Em Cây Khế - Nhậu hết mình!",
-                "Nối Lại Tình Xưa - Nâng ly lên nào!"
-            ];
-            const song = songs[Math.floor(Math.random() * songs.length)];
-            document.getElementById('toast-banner').innerText = `🎤 Đang phát Karaoke: "${song}"`;
-        }
-
-        // Apply screen blur when drunk
-        function applyDrunkEffect() {
-            if (totalDrunkLevel > 30) {
-                const blurVal = (totalDrunkLevel - 30) / 25;
-                document.body.style.filter = `blur(${blurVal}px)`;
-            }
-        }
-
-        // Chat Functions
-        function addChatMessage(author, text) {
+        // Lắng nghe tin nhắn realtime
+        db.ref('chats').limitToLast(20).on('child_added', snapshot => {
+            const msg = snapshot.val();
             const chatBox = document.getElementById('chat-messages');
             const msgEl = document.createElement('div');
             msgEl.className = 'msg';
-            msgEl.innerHTML = `<div class="author">${author}:</div><div>${text}</div>`;
+            msgEl.innerHTML = `<span class="author">${msg.author}:</span> ${msg.text}`;
             chatBox.appendChild(msgEl);
             chatBox.scrollTop = chatBox.scrollHeight;
-        }
+
+            document.getElementById('toast-banner').innerText = `📢 ${msg.author}: "${msg.text}"`;
+        });
 
         function sendMessage() {
+            if (!currentUser) return alert("Vui lòng chọn tên trước!");
             const input = document.getElementById('chat-input');
             const text = input.value.trim();
             if (text) {
-                addChatMessage("Bạn", text);
-                document.getElementById('toast-banner').innerText = `💬 Bạn: "${text}"`;
+                db.ref('chats').push({ author: currentUser, text: text });
                 input.value = '';
             }
+        }
+
+        function sendAction(actionText) {
+            if (!currentUser) return;
+            db.ref('chats').push({ author: currentUser, text: actionText });
+        }
+
+        function doCheers() {
+            if (!currentUser) return;
+            db.ref('chats').push({ author: currentUser, text: "vừa CỤM LY ZÔ 100%! 💥🍻" });
         }
 
         function handleKeyPress(e) {
             if (e.key === 'Enter') sendMessage();
         }
-
-        // Auto Bot Chat simulation
-        setInterval(() => {
-            const randMember = members[Math.floor(Math.random() * members.length)];
-            const randText = sampleChats[Math.floor(Math.random() * sampleChats.length)];
-            addChatMessage(randMember.name, randText);
-        }, 8000);
-
-        // Init
-        renderMembers();
     </script>
 </body>
 </html>
