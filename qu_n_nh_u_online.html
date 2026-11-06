@@ -3,804 +3,578 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUÁN NHẬU ONLINE THỨ 6 - Zô Là 100%</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;900&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+    <title>QUÁN NHẬU ONLINE THỨ 6</title>
     <style>
-        body {
-            font-family: 'Lexend', sans-serif;
-            background-color: #0d0f17;
-            color: #e2e8f0;
-            overflow-x: hidden;
+        :root {
+            --bg-dark: #0f0c20;
+            --panel-bg: rgba(20, 16, 45, 0.85);
+            --neon-pink: #ff007f;
+            --neon-blue: #00f3ff;
+            --neon-gold: #ffb700;
+            --neon-green: #39ff14;
+            --text-light: #f0f0ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             user-select: none;
         }
 
-        /* Custom Scrollbars */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #f59e0b;
-            border-radius: 3px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: filter 0.5s ease;
         }
 
-        /* Neon Glow Effects */
-        .neon-title {
-            text-shadow: 0 0 5px #f59e0b, 0 0 10px #f59e0b, 0 0 20px #d97706, 0 0 40px #b45309;
-        }
-        .neon-pink {
-            text-shadow: 0 0 5px #ec4899, 0 0 15px #ec4899, 0 0 30px #be185d;
-        }
-        .neon-green {
-            text-shadow: 0 0 5px #10b981, 0 0 15px #10b981;
-        }
-        .neon-box {
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.1);
+        /* Header Neon Sign */
+        header {
+            text-align: center;
+            padding: 15px;
+            background: rgba(10, 8, 25, 0.95);
+            border-bottom: 2px solid var(--neon-pink);
+            box-shadow: 0 0 20px rgba(ff, 0, 127, 0.4);
+            position: relative;
+            z-index: 10;
         }
 
-        /* Dynamic Glass Bubbles & Animations */
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
-        }
-        .floating-bubble {
-            animation: floatUp 3s ease-out forwards;
-        }
-
-        @keyframes toastClinkLeft {
-            0% { transform: rotate(0deg) translateX(0); }
-            50% { transform: rotate(20deg) translateX(25px); }
-            100% { transform: rotate(0deg) translateX(0); }
-        }
-        @keyframes toastClinkRight {
-            0% { transform: rotate(0deg) translateX(0); }
-            50% { transform: rotate(-20deg) translateX(-25px); }
-            100% { transform: rotate(0deg) translateX(0); }
+        h1.neon-title {
+            font-size: 2.2rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-pink),
+                0 0 30px var(--neon-pink),
+                0 0 40px var(--neon-pink);
+            animation: blink 2s infinite alternate;
         }
 
-        .clink-left { animation: toastClinkLeft 0.5s ease-in-out; }
-        .clink-right { animation: toastClinkRight 0.5s ease-in-out; }
-
-        /* Drunk Effect Filter */
-        .drunk-filter {
-            filter: blur(0px);
-            transition: filter 0.5s ease, transform 0.5s ease;
-        }
-        .drunk-level-1 { filter: blur(0.5px); }
-        .drunk-level-2 { filter: blur(1.5px) contrast(110%); }
-        .drunk-level-3 { filter: blur(2.5px) hue-rotate(15deg); animation: sway 4s infinite ease-in-out; }
-        .drunk-level-4 { filter: blur(4px) hue-rotate(45deg); animation: sway 2s infinite ease-in-out; }
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(1.2deg) scale(1.01); }
-            75% { transform: rotate(-1.2deg) scale(0.99); }
+        .subtitle {
+            color: var(--neon-blue);
+            font-size: 0.95rem;
+            margin-top: 5px;
+            letter-spacing: 1px;
         }
 
-        /* Flying Toast Notification */
-        @keyframes bannerSlide {
-            0% { transform: translateX(-100%); opacity: 0; }
-            15% { transform: translateX(0); opacity: 1; }
-            85% { transform: translateX(0); opacity: 1; }
-            100% { transform: translateX(100%); opacity: 0; }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+            80% { opacity: 0.95; }
         }
+
+        /* Main Container Layout */
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 15px;
+            padding: 15px;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panel Common Style */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            color: var(--neon-gold);
+            border-bottom: 1px solid rgba(255, 183, 0, 0.3);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Member List */
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 3px solid var(--neon-blue);
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .member-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .member-status {
+            font-size: 0.75rem;
+            color: var(--neon-green);
+        }
+
+        .drunk-meter {
+            font-size: 0.8rem;
+            color: var(--neon-gold);
+            font-weight: bold;
+        }
+
+        /* Main Pub Table Area */
+        .pub-stage {
+            position: relative;
+            background: radial-gradient(circle, rgba(40,30,80,0.6) 0%, rgba(15,12,32,0.9) 100%), url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80') center/cover;
+            border-radius: 15px;
+            border: 2px solid var(--neon-blue);
+            box-shadow: inset 0 0 30px rgba(0, 243, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            min-height: 480px;
+            overflow: hidden;
+        }
+
+        /* Floating Wish / Toast Banner */
         .toast-banner {
-            animation: bannerSlide 4.5s ease-in-out forwards;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--neon-gold);
+            border-radius: 20px;
+            padding: 8px 20px;
+            color: #fff;
+            font-size: 0.95rem;
+            max-width: 80%;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
+        }
+
+        /* Wooden Table & Beer Glasses */
+        .table-area {
+            position: relative;
+            width: 320px;
+            height: 200px;
+            background: #4a2c11;
+            border-radius: 100px / 60px;
+            border: 8px solid #2d1a0a;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .beer-glass {
+            font-size: 4rem;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+        }
+
+        .beer-glass:active {
+            transform: scale(0.9) rotate(-10deg);
+        }
+
+        .cheers-effect {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--neon-gold);
+            text-shadow: 0 0 10px #ff0000;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.5s ease-out;
+        }
+
+        /* Action Buttons Grid */
+        .action-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--neon-pink);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+            transform: translateY(-2deg);
+        }
+
+        .btn:active {
+            transform: translateY(1deg);
+        }
+
+        /* Chat Panel */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 5px;
+        }
+
+        .msg {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .msg .author {
+            color: var(--neon-blue);
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .chat-input-group {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 8px 10px;
+            color: #fff;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: var(--neon-blue);
+        }
+
+        .btn-send {
+            background: var(--neon-blue);
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Food Items Display */
+        .food-items {
+            position: absolute;
+            display: flex;
+            gap: 15px;
+            font-size: 1.8rem;
+            bottom: 25px;
         }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col justify-between overflow-hidden bg-slate-950 text-slate-100 relative">
+<body>
 
-    <!-- Drunk overlay container -->
-    <div id="drunkCanvasOverlay" class="absolute inset-0 pointer-events-none z-40 transition-all duration-700"></div>
-
-    <!-- Notification / Toast Banner Dynamic Container -->
-    <div id="bannerContainer" class="absolute top-16 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none w-full max-w-xl flex flex-col items-center gap-2"></div>
-
-    <!-- Top Navigation Bar -->
-    <header class="bg-slate-900/90 border-b border-amber-500/30 px-4 py-2 flex items-center justify-between z-30 backdrop-blur-md">
-        <!-- User Stats -->
-        <div class="flex items-center space-x-3">
-            <div class="relative">
-                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-400 p-0.5 shadow-lg shadow-amber-500/30">
-                    <img id="userAvatarImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=TuuThan99" class="w-full h-full rounded-full bg-slate-800" alt="Avatar">
-                </div>
-                <span class="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 font-extrabold text-[10px] px-1.5 py-0.5 rounded-full border border-slate-900" id="userLevelBadge">LV.1</span>
-            </div>
-            <div>
-                <div class="flex items-center gap-2">
-                    <h2 class="font-bold text-amber-400 leading-tight" id="userNameDisplay">Thánh Đô Lượng</h2>
-                    <button onclick="changeUserName()" class="text-xs text-slate-400 hover:text-amber-300 transition"><i class="fa-solid fa-pen"></i></button>
-                </div>
-                <div class="flex items-center gap-3 text-xs text-slate-300">
-                    <span>Danh hiệu: <strong class="text-amber-300" id="userTitle">Tập Sự Nhập Môn</strong></span>
-                    <span class="text-amber-500/60">|</span>
-                    <span class="text-emerald-400"><i class="fa-solid fa-beer-mug-empty"></i> <span id="milliLitersDrunk">0</span> ml đã uống</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Center Pub Name -->
-        <div class="hidden md:flex flex-col items-center">
-            <h1 class="text-xl md:text-2xl font-black text-amber-400 tracking-wider neon-title uppercase flex items-center gap-2">
-                <i class="fa-solid fa-beer-mug-empty text-yellow-400"></i> QUÁN NHẬU ONLINE THỨ 6
-            </h1>
-            <p class="text-xs text-amber-200/70 italic">"Không say không về - Đã nhậu là không lái xe!"</p>
-        </div>
-
-        <!-- System Counters & Actions -->
-        <div class="flex items-center space-x-4">
-            <div class="hidden sm:flex items-center gap-4 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700 text-xs">
-                <div class="flex items-center gap-1.5 text-emerald-400">
-                    <span class="relative flex h-2 w-2">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span><strong id="onlineCount">128</strong> chiến hữu</span>
-                </div>
-                <div class="text-amber-400">
-                    <i class="fa-solid fa-wine-glass-empty mr-1"></i><strong id="totalToastsCount">1,420</strong> lần cụm ly
-                </div>
-            </div>
-
-            <button onclick="toggleAudio()" id="audioToggleBtn" class="bg-slate-800 hover:bg-slate-700 text-amber-400 p-2.5 rounded-xl border border-amber-500/30 transition text-sm">
-                <i class="fa-solid fa-volume-high" id="audioIcon"></i>
-            </button>
-        </div>
+    <header>
+        <h1 class="neon-title">🍻 QUÁN NHẬU ONLINE THỨ 6 🍻</h1>
+        <div class="subtitle">Anh em nâng ly - Zô là 100% - Không say không về!</div>
     </header>
 
-    <!-- Main Dynamic Pub Scene Area -->
-    <main id="mainScene" class="relative flex-1 bg-gradient-to-b from-slate-950 via-slate-900 to-amber-950/40 flex flex-col items-center justify-center p-4 overflow-hidden drunk-filter">
-        
-        <!-- Background Street Pub Decoration -->
-        <div class="absolute top-4 left-6 opacity-30 pointer-events-none hidden lg:block">
-            <div class="text-pink-500 font-bold text-lg neon-pink border-2 border-pink-500 p-2 rounded-lg rotate-[-6deg]">
-                🍺 GIỜ VÀNG HẤP DẪN: MUA 1 TẶNG 1
+    <div class="container">
+        <!-- Left: Members List -->
+        <div class="panel">
+            <div class="panel-title">
+                <span>Bàn Nhậu Chiến Hữu</span>
+                <span style="font-size: 0.8rem; color: var(--neon-green);" id="online-count">7 Online</span>
             </div>
-        </div>
-        <div class="absolute top-6 right-8 opacity-30 pointer-events-none hidden lg:block">
-            <div class="text-emerald-400 font-bold text-base neon-green border border-emerald-400 p-2 rounded-lg rotate-[8deg]">
-                🎤 KARAOKE VI DÂN - CHÁY HẾT MÌNH
+            <div class="member-list" id="member-list">
+                <!-- JS auto fill members -->
             </div>
         </div>
 
-        <!-- Central Interactive Drinking Table Scene -->
-        <div class="relative w-full max-w-4xl bg-stone-900/90 border-4 border-amber-800/80 rounded-3xl p-6 shadow-2xl shadow-black/80 flex flex-col items-center justify-between min-h-[340px] md:min-h-[420px] my-auto backdrop-blur-md">
-            
-            <!-- Floating Wishes Display Stage inside Tavern -->
-            <div id="floatingWishesArea" class="absolute inset-x-4 top-2 h-20 pointer-events-none overflow-hidden"></div>
+        <!-- Center: Main Pub Interactive Area -->
+        <div class="pub-stage">
+            <div class="toast-banner" id="toast-banner">
+                📢 Thế Vũ: "Thứ 6 rồi anh em ơi, nâng ly 100% nào!"
+            </div>
 
-            <!-- Avatars around the table (Top Side) -->
-            <div class="flex justify-around w-full max-w-2xl mb-2 z-10">
-                <!-- Companion 1 -->
-                <div class="flex flex-col items-center transform hover:scale-105 transition cursor-pointer" onclick="challengeUser('AnhBảySàiGòn')">
-                    <div class="relative">
-                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=AnhBay" class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-slate-800 border-2 border-amber-400 p-1" alt="Anh Bảy">
-                        <span class="absolute -top-2 -right-2 bg-red-600 text-[10px] px-1.5 py-0.5 rounded-full font-bold">Say 60%</span>
-                    </div>
-                    <span class="text-xs mt-1 font-semibold text-amber-200">Anh Bảy</span>
-                    <span class="text-[10px] text-slate-400">"Tới bến luôn em ơi!"</span>
-                </div>
-
-                <!-- User Main Avatar (Center Seat) -->
-                <div class="flex flex-col items-center transform hover:scale-110 transition relative">
-                    <div class="relative">
-                        <div id="userAvatarRing" class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-slate-800 border-4 border-yellow-400 p-1 shadow-lg shadow-yellow-500/50">
-                            <img id="mainUserAvatarImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=TuuThan99" class="w-full h-full rounded-full" alt="Bạn">
-                        </div>
-                        <div id="drunkBadge" class="absolute -bottom-2 bg-emerald-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded-full border border-slate-900 shadow">
-                            TỈNH TÁO 0%
-                        </div>
-                    </div>
-                    <span class="text-sm font-bold text-yellow-300 mt-2" id="mainUserName">Bạn (Thánh Đô Lượng)</span>
-                </div>
-
-                <!-- Companion 2 -->
-                <div class="flex flex-col items-center transform hover:scale-105 transition cursor-pointer" onclick="challengeUser('ÚtVừaTới')">
-                    <div class="relative">
-                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=UtVuaToi" class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-slate-800 border-2 border-purple-400 p-1" alt="Út Xì Teen">
-                        <span class="absolute -top-2 -right-2 bg-amber-500 text-slate-950 text-[10px] px-1.5 py-0.5 rounded-full font-bold">Say 30%</span>
-                    </div>
-                    <span class="text-xs mt-1 font-semibold text-amber-200">Út Xì Teen</span>
-                    <span class="text-[10px] text-slate-400">"Nâng ly lên nà!"</span>
+            <div class="table-area" onclick="doCheers()">
+                <div class="beer-glass" id="beer-glass">🍺</div>
+                <div class="cheers-effect" id="cheers-effect">ZÔ 100%! 💥</div>
+                <div class="food-items" id="food-items">
+                    <!-- Dishes will be added here -->
                 </div>
             </div>
 
-            <!-- Virtual Wooden Table Center Surface -->
-            <div class="w-full bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 rounded-2xl border-4 border-amber-700/60 p-4 shadow-inner flex flex-col items-center justify-center relative min-h-[140px] md:min-h-[180px] my-2">
-                <!-- Table Texture overlay -->
-                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-
-                <div class="text-xs text-amber-400/60 mb-2 uppercase tracking-widest font-bold">Mặt Bàn Nhậu Bằng Gỗ Lim</div>
-
-                <!-- Glass and Dishes Container -->
-                <div class="flex items-center justify-center gap-6 md:gap-12 flex-wrap z-10">
-                    <!-- Companion 1 Glass -->
-                    <div class="flex flex-col items-center">
-                        <div class="text-2xl md:text-4xl transform -rotate-12 transition" id="glassCompanion1">🍺</div>
-                        <span class="text-[10px] text-amber-300/80">Ly Anh Bảy</span>
-                    </div>
-
-                    <!-- User Active Glass -->
-                    <div class="flex flex-col items-center relative scale-125">
-                        <div id="userBeerGlass" class="text-4xl md:text-5xl transition-transform duration-300">🍺</div>
-                        <!-- Beer Fill Level Bar under glass -->
-                        <div class="w-12 bg-slate-950 rounded-full h-2 mt-1 overflow-hidden border border-amber-500/40">
-                            <div id="glassFillBar" class="bg-yellow-400 h-full w-full transition-all duration-300"></div>
-                        </div>
-                    </div>
-
-                    <!-- Companion 2 Glass -->
-                    <div class="flex flex-col items-center">
-                        <div class="text-2xl md:text-4xl transform rotate-12 transition" id="glassCompanion2">🍺</div>
-                        <span class="text-[10px] text-amber-300/80">Ly Út</span>
-                    </div>
-                </div>
-
-                <!-- Ordered Food Dishes on Table -->
-                <div id="tableDishes" class="flex items-center justify-center gap-2 mt-3 flex-wrap min-h-[36px]">
-                    <span class="text-slate-500 italic text-xs" id="emptyDishesText">(Bàn chưa có mồi, hãy bấm "Gọi Mồi"!)</span>
-                </div>
-            </div>
-
-            <!-- Drunk Level Progress Bar bottom of scene -->
-            <div class="w-full max-w-lg mt-1">
-                <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-                    <span><i class="fa-solid fa-gauge-high text-amber-400 mr-1"></i> Mức Độ Say (Tửu Lượng):</span>
-                    <span id="drunkPercentText" class="text-emerald-400 font-bold">0% - Tỉnh Táo</span>
-                </div>
-                <div class="w-full bg-slate-950 h-3.5 rounded-full border border-slate-700 overflow-hidden p-0.5">
-                    <div id="drunkProgressBar" class="bg-gradient-to-r from-emerald-500 via-yellow-400 to-red-600 h-full rounded-full w-0 transition-all duration-500"></div>
-                </div>
+            <div class="action-bar">
+                <button class="btn" onclick="doCheers()">
+                    <span>🍻</span> Cụm Ly 100%
+                </button>
+                <button class="btn" onclick="pourBeer()">
+                    <span>🍺</span> Rót Đầy Ly
+                </button>
+                <button class="btn" onclick="orderFood()">
+                    <span>🍖</span> Gọi Mồi Ngon
+                </button>
+                <button class="btn" onclick="singKaraoke()">
+                    <span>🎤</span> Hát Karaoke
+                </button>
             </div>
         </div>
-    </main>
 
-    <!-- Interactive Dashboard Footer (Split Chat Left & Actions Right) -->
-    <footer class="bg-slate-900 border-t border-amber-500/30 p-2 md:p-3 flex flex-col md:flex-row gap-3 z-30">
-        
-        <!-- Bottom Left: Live Community Chat -->
-        <div class="w-full md:w-1/3 bg-slate-950/80 border border-slate-800 rounded-2xl p-2.5 flex flex-col h-44 md:h-52">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-1.5">
-                <div class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-                    <i class="fa-solid fa-comments"></i> Kênh Trò Chuyện Bàn Nhậu
-                </div>
-                <span class="text-[10px] text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">Trực tiếp</span>
+        <!-- Right: Chat Box -->
+        <div class="panel chat-box">
+            <div class="panel-title">Trò Chuyện Quán Nhậu</div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="msg"><span class="author">Hệ thống:</span> Chào mừng anh em đến với QUÁN NHẬU ONLINE THỨ 6!</div>
             </div>
-            
-            <!-- Chat Messages Log -->
-            <div id="chatBox" class="flex-1 overflow-y-auto space-y-1.5 pr-1 text-xs">
-                <div class="text-slate-400 italic text-[11px]">Chủ quán: "Chào mừng các chiến hữu đến với Quán Nhậu Online! Zô 100% nào!"</div>
-            </div>
-
-            <!-- Chat Input Bar -->
-            <form id="chatForm" onsubmit="sendChatMessage(event)" class="mt-2 flex gap-1.5">
-                <input type="text" id="chatInput" placeholder="Nói gì đó hoặc chém gió..." class="flex-1 bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-1.5 text-slate-200 focus:outline-none focus:border-amber-400">
-                <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs transition flex items-center gap-1">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </form>
-        </div>
-
-        <!-- Bottom Right: Interactive Actions Grid Panel -->
-        <div class="w-full md:w-2/3 grid grid-cols-3 sm:grid-cols-6 gap-2">
-            
-            <!-- Action 1: Cụm Ly / 100% -->
-            <button onclick="actionToastGlasses()" class="group relative bg-gradient-to-b from-amber-500 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 rounded-2xl p-2.5 flex flex-col items-center justify-center font-black shadow-lg shadow-amber-500/20 active:scale-95 transition border border-amber-300">
-                <i class="fa-solid fa-beer-mug-empty text-2xl mb-1 group-hover:scale-125 transition-transform"></i>
-                <span class="text-xs tracking-tight uppercase">Cụm Ly 100%</span>
-                <span class="text-[9px] text-amber-950 font-semibold mt-0.5">+100ml</span>
-            </button>
-
-            <!-- Action 2: Rót Bia -->
-            <button onclick="actionPourBeer()" class="group bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-400 rounded-2xl p-2 flex flex-col items-center justify-center font-bold active:scale-95 transition">
-                <i class="fa-solid fa-bottle-droplet text-xl text-yellow-400 mb-1 group-hover:rotate-45 transition-transform"></i>
-                <span class="text-xs">Rót Bia đầy</span>
-            </button>
-
-            <!-- Action 3: Gọi Mồi Nhắm -->
-            <button onclick="openFoodModal()" class="group bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-400 rounded-2xl p-2 flex flex-col items-center justify-center font-bold active:scale-95 transition">
-                <i class="fa-solid fa-utensils text-xl text-orange-400 mb-1 group-hover:bounce transition-transform"></i>
-                <span class="text-xs">Gọi Mồi ngon</span>
-            </button>
-
-            <!-- Action 4: Hát Karaoke -->
-            <button onclick="openKaraokeModal()" class="group bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-400 rounded-2xl p-2 flex flex-col items-center justify-center font-bold active:scale-95 transition">
-                <i class="fa-solid fa-microphone-lines text-xl text-pink-400 mb-1 group-hover:scale-110 transition-transform"></i>
-                <span class="text-xs">Hát Karaoke</span>
-            </button>
-
-            <!-- Action 5: Thách Rượu -->
-            <button onclick="openChallengeModal()" class="group bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-400 rounded-2xl p-2 flex flex-col items-center justify-center font-bold active:scale-95 transition">
-                <i class="fa-solid fa-hand-fist text-xl text-red-400 mb-1 group-hover:scale-110 transition-transform"></i>
-                <span class="text-xs">Thách Rượu</span>
-            </button>
-
-            <!-- Action 6: Lời Chúc Hài Hước -->
-            <button onclick="actionSendWish()" class="group bg-slate-800 hover:bg-slate-700 border border-amber-500/40 text-amber-400 rounded-2xl p-2 flex flex-col items-center justify-center font-bold active:scale-95 transition">
-                <i class="fa-solid fa-bullhorn text-xl text-cyan-400 mb-1 group-hover:rotate-12 transition-transform"></i>
-                <span class="text-xs">Phát Biểu</span>
-            </button>
-        </div>
-    </footer>
-
-    <!-- MODAL 1: Gọi Mồi Menu -->
-    <div id="foodModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border-2 border-amber-500/50 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
-            <button onclick="closeModal('foodModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <h3 class="text-lg font-extrabold text-amber-400 flex items-center gap-2 mb-4">
-                <i class="fa-solid fa-utensils"></i> Thực Đơn Mồi Nhắm Bén
-            </h3>
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="orderFood('Lẩu Thái Hải Sản', '🍲')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
-                    <span class="text-3xl mb-1">🍲</span>
-                    <span class="text-xs font-bold text-amber-200">Lẩu Thái Chua Cay</span>
-                    <span class="text-[10px] text-slate-400">Giải rượu cực đỉnh</span>
-                </button>
-                <button onclick="orderFood('Bò Nướng Tảng', '🥩')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
-                    <span class="text-3xl mb-1">🥩</span>
-                    <span class="text-xs font-bold text-amber-200">Bò Nướng Tảng</span>
-                    <span class="text-[10px] text-slate-400">Thơm lừng mắm đậu</span>
-                </button>
-                <button onclick="orderFood('Đậu Hũ Lướt Ván', '🧈')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
-                    <span class="text-3xl mb-1">🧈</span>
-                    <span class="text-xs font-bold text-amber-200">Đậu Hũ Lướt Ván</span>
-                    <span class="text-[10px] text-slate-400">Giòn rụm bên ngoài</span>
-                </button>
-                <button onclick="orderFood('Chân Gà Sả Tắc', '🐓')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
-                    <span class="text-3xl mb-1">🐓</span>
-                    <span class="text-xs font-bold text-amber-200">Chân Gà Sả Tắc</span>
-                    <span class="text-[10px] text-slate-400">Chua ngọt nhai giòn</span>
-                </button>
+            <div class="chat-input-group">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Nhập lời chúc / Thách rượu..." onkeypress="handleKeyPress(event)">
+                <button class="btn-send" onclick="sendMessage()">Gửi</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: Karaoke Mini Player -->
-    <div id="karaokeModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border-2 border-pink-500/50 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
-            <button onclick="closeModal('karaokeModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <h3 class="text-lg font-extrabold text-pink-400 flex items-center gap-2 mb-3">
-                <i class="fa-solid fa-microphone-lines"></i> Karaoke Nhậu Quán
-            </h3>
-            <p class="text-xs text-slate-300 mb-4">Chọn bài hát để cất giọng làm bùng nổ không khí bàn nhậu!</p>
-            
-            <div class="space-y-2">
-                <button onclick="singSong('Hãy Ra Đây Uống Cùng Anh')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
-                    <div>
-                        <div class="text-xs font-bold text-pink-300">1. Hãy Ra Đây Uống Cùng Anh</div>
-                        <div class="text-[10px] text-slate-400">Nhạc Trẻ Remix nhậu</div>
-                    </div>
-                    <i class="fa-solid fa-play text-pink-400"></i>
-                </button>
-                <button onclick="singSong('Túy Âm (Phiên bản Bàn Nhậu)')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
-                    <div>
-                        <div class="text-xs font-bold text-pink-300">2. Túy Âm</div>
-                        <div class="text-[10px] text-slate-400">Chill nhẹ sương sương</div>
-                    </div>
-                    <i class="fa-solid fa-play text-pink-400"></i>
-                </button>
-                <button onclick="singSong('Say Tình')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
-                    <div>
-                        <div class="text-xs font-bold text-pink-300">3. Say Tình - Đàm Vĩnh Hưng</div>
-                        <div class="text-[10px] text-slate-400">Bài ca huyền thoại các bàn nhậu</div>
-                    </div>
-                    <i class="fa-solid fa-play text-pink-400"></i>
-                </button>
-            </div>
-            
-            <!-- Lyrics Display Screen -->
-            <div id="lyricsBox" class="mt-4 bg-slate-950 p-3 rounded-xl border border-slate-800 text-center hidden">
-                <div class="text-xs text-amber-400 font-bold mb-1" id="currentSongTitle">Đang hát...</div>
-                <div class="text-xs italic text-pink-300 font-serif" id="currentLyricLine">"1 2 3 Zô! 2 3 Zô! 2 3 UỐNG!"</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 3: Thách Rượu -->
-    <div id="challengeModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border-2 border-red-500/50 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
-            <button onclick="closeModal('challengeModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <h3 class="text-lg font-extrabold text-red-400 flex items-center gap-2 mb-3">
-                <i class="fa-solid fa-hand-fist"></i> Thách Đố Tửu Lượng
-            </h3>
-            <p class="text-xs text-slate-300 mb-4">Chọn chiến hữu trong bàn để Thách Cụm Ly 100%!</p>
-            <div class="space-y-2">
-                <button onclick="executeChallenge('Anh Bảy Sài Gòn')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-red-500/30 text-left flex items-center justify-between">
-                    <span class="text-xs font-bold text-slate-200">Anh Bảy Sài Gòn (Đô 20 lon)</span>
-                    <span class="bg-red-500/20 text-red-300 text-xs px-2 py-1 rounded-lg">Thách Uống</span>
-                </button>
-                <button onclick="executeChallenge('Út Xì Teen')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-red-500/30 text-left flex items-center justify-between">
-                    <span class="text-xs font-bold text-slate-200">Út Xì Teen (Chiến thần bia hơi)</span>
-                    <span class="bg-red-500/20 text-red-300 text-xs px-2 py-1 rounded-lg">Thách Uống</span>
-                </button>
-                <button onclick="executeChallenge('Toàn Bàn Nhậu')" class="w-full bg-amber-600/30 hover:bg-amber-600/40 p-3 rounded-xl border border-amber-500/50 text-left flex items-center justify-between">
-                    <span class="text-xs font-bold text-amber-300">🔥 THÁCH TOÀN BÀN NÂNG LY!</span>
-                    <span class="bg-amber-500 text-slate-950 font-bold text-xs px-2 py-1 rounded-lg">ZÔ 100%</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript Logic & Sound Engine -->
     <script>
-        // Game State Variables
-        let audioEnabled = true;
-        let userData = {
-            name: "Thánh Đô Lượng",
-            avatarSeed: "TuuThan99",
-            mlDrunk: 0,
-            drunkPercent: 0,
-            level: 1,
-            glassFilledPercent: 100
-        };
-
-        let totalToasts = 1420;
-        let onlineCount = 128;
-
-        const FUNNY_QUOTES = [
-            "Không say không về!",
-            "Đã nhậu là tuyệt đối không lái xe!",
-            "Nhấp môi là bất lịch sự, 100% mới là anh em!",
-            "Bia này không đắng, đắng bằng lòng người đâu!",
-            "Uống đi cho quên sự đời!",
-            "Nam quốc sơn hà nam đế cư, rượu ngon phải có bạn hiền xừ!",
-            "1 2 3 ZÔ! 2 3 ZÔ! 2 3 UỐNG!",
-            "Hôm nay không say, mai nhậu tiếp!"
+        // Data Members
+        const members = [
+            { name: "Thanh Quí", drunk: 10 },
+            { name: "Quang Hoà", drunk: 15 },
+            { name: "Lê Hoà", drunk: 5 },
+            { name: "Thế Vũ", drunk: 20 },
+            { name: "Thanh Chính", drunk: 0 },
+            { name: "Trọng Tình", drunk: 12 },
+            { name: "Đình Dũng", drunk: 8 }
         ];
 
-        const BOT_NAMES = [
-            "SayChưaBro", "ThánhĐôLượng", "ChiếnThầnMộtBọt", "AnhBảySàiGòn",
-            "ÚtXìTeen", "TửuThầnBấtBại", "BaRọiNướng", "SáuCuaĐồng"
+        const foods = ["🍗", "🥩", "🦪", "🦐", "🦑", "🥜", "🍢"];
+
+        const sampleChats = [
+            "Zô 100% anh em ơi!",
+            "Lên ly đi Quang Hoà ơi!",
+            "Thứ 6 xả giàn thôi các chiến hữu!",
+            "Rót đầy ly cho Thanh Quí giúp em!",
+            "Hôm nay không say không về nha!",
+            "Lê Hoà đâu rồi, lên tiếng cái coi!",
+            "Đình Dũng làm ly 50% trước đi!"
         ];
 
-        const BOT_MESSAGES = [
-            "Mới 2 lon mà đầu óc quay quay rồi các ông ơi!",
-            "Cho xin miếng mồi lẩu thái đi anh em ơi!",
-            "Zô 100% đi ai lại nhấp môi thế kia 🤣",
-            "Ai bật bài Say Tình lên karaoke đê!",
-            "Chén này mừng anh em hội ngộ!",
-            "Alo taxi chuẩn bị đón tôi về nhé..."
-        ];
+        let totalDrunkLevel = 0;
 
-        // Level titles matching template
-        const TITLES = [
-            "Tập Sự Nhập Môn",
-            "Chiến Hữu Sương Sương",
-            "Bợm Nhậu Tiềm Năng",
-            "Tay Ly Cừ Khôi",
-            "Cao Thủ 100%",
-            "Đô Lượng Vô Song",
-            "Tửu Thần Bàn Nhậu"
-        ];
-
-        // Web Audio Synthesizer Engine (No external files needed)
-        const AudioEngine = {
-            ctx: null,
-            init() {
-                if (!this.ctx) {
-                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-            },
-            // Sound 1: Glass Clinking (High frequency metallic bell resonant chime)
-            playClink() {
-                if (!audioEnabled) return;
-                this.init();
-                const now = this.ctx.currentTime;
+        // Sound generator via Web Audio API
+        function playClinkSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
                 
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(2400, now);
-                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
-
-                gain.gain.setValueAtTime(0.6, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-
+                osc.frequency.setValueAtTime(1200, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.3);
+                
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                
                 osc.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                osc.start(now);
-                osc.stop(now + 0.6);
-            },
-            // Sound 2: Pouring liquid bubbling effect
-            playPour() {
-                if (!audioEnabled) return;
-                this.init();
-                const now = this.ctx.currentTime;
-
-                for(let i = 0; i < 5; i++) {
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(400 + Math.random() * 300, now + i * 0.08);
-                    gain.gain.setValueAtTime(0.15, now + i * 0.08);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.1);
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc.start(now + i * 0.08);
-                    osc.stop(now + i * 0.08 + 0.1);
-                }
-            },
-            // Sound 3: Cheering / Toasting Crowd sound synthesizer
-            playCheer() {
-                if (!audioEnabled) return;
-                this.init();
-                const now = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(180, now);
-                osc.frequency.linearRampToValueAtTime(320, now + 0.3);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.5);
-            }
-        };
-
-        // Initialize App
-        window.addEventListener('DOMContentLoaded', () => {
-            updateUI();
-            startBotSimulations();
-        });
-
-        function toggleAudio() {
-            audioEnabled = !audioEnabled;
-            const icon = document.getElementById('audioIcon');
-            if (audioEnabled) {
-                icon.className = 'fa-solid fa-volume-high';
-                showToastBanner('🔊 Đã bật âm thanh sống động');
-            } else {
-                icon.className = 'fa-solid fa-volume-xmark';
-                showToastBanner('🔇 Đã tắt âm thanh');
-            }
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            } catch(e) {}
         }
 
-        // ACTION: Toast / Cụm Ly 100%
-        function actionToastGlasses() {
-            if (userData.glassFilledPercent <= 10) {
-                showToastBanner('⚠️ Ly bạn đã cạn! Bấm "Rót Bia" để làm đầy ly nhé!');
-                return;
-            }
+        // Render member list
+        function renderMembers() {
+            const listEl = document.getElementById('member-list');
+            listEl.innerHTML = members.map(m => `
+                <div class="member-card">
+                    <div class="member-info">
+                        <div class="avatar">${m.name.charAt(0)}</div>
+                        <div>
+                            <div class="member-name">${m.name}</div>
+                            <div class="member-status">● Đang nhậu</div>
+                        </div>
+                    </div>
+                    <div class="drunk-meter">🍺 ${m.drunk}%</div>
+                </div>
+            `).join('');
+        }
 
-            // Audio & Visual Effects
-            AudioEngine.playClink();
-            AudioEngine.playCheer();
+        // Action: Cheers 100%
+        function doCheers() {
+            playClinkSound();
 
-            // Glass animation
-            const glassComp1 = document.getElementById('glassCompanion1');
-            const glassComp2 = document.getElementById('glassCompanion2');
-            const userGlass = document.getElementById('userBeerGlass');
-
-            glassComp1.classList.add('clink-left');
-            glassComp2.classList.add('clink-right');
-            userGlass.classList.add('scale-150');
+            const effect = document.getElementById('cheers-effect');
+            effect.style.opacity = '1';
+            effect.style.transform = 'translateY(-20px) scale(1.2)';
 
             setTimeout(() => {
-                glassComp1.classList.remove('clink-left');
-                glassComp2.classList.remove('clink-right');
-                userGlass.classList.remove('scale-150');
-            }, 500);
+                effect.style.opacity = '0';
+                effect.style.transform = 'translateY(0) scale(1)';
+            }, 600);
 
-            // Update user stats
-            userData.mlDrunk += 100;
-            userData.glassFilledPercent = Math.max(0, userData.glassFilledPercent - 35);
-            userData.drunkPercent = Math.min(100, userData.drunkPercent + 12);
-            totalToasts += 1;
+            // Increase random member drunk level
+            const randIdx = Math.floor(Math.random() * members.length);
+            members[randIdx].drunk = Math.min(100, members[randIdx].drunk + 10);
+            totalDrunkLevel = Math.min(100, totalDrunkLevel + 3);
 
-            // Level up logic
-            checkLevelUp();
-            updateUI();
+            renderMembers();
+            applyDrunkEffect();
 
-            // Announcement Banner
-            showToastBanner(`🍻 ${userData.name} vừa cụm ly 100%! Hào quang tửu thần bùng cháy!`);
-            addChatMessage(userData.name, "100% ZÔÔÔ! Mọi người cùng nâng ly nào!");
+            // Auto toast
+            const speaker = members[randIdx].name;
+            document.getElementById('toast-banner').innerText = `📢 ${speaker}: "Anh em cụm ly Zô 100% nào!"`;
         }
 
-        // ACTION: Pour Beer
-        function actionPourBeer() {
-            AudioEngine.playPour();
-            userData.glassFilledPercent = 100;
-            updateUI();
-            showToastBanner('🍺 Đã rót đầy tràn bọt ly bia mát lạnh!');
+        // Action: Pour Beer
+        function pourBeer() {
+            const glass = document.getElementById('beer-glass');
+            glass.style.transform = 'scale(1.2) rotate(15deg)';
+            setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 300);
+
+            addChatMessage("Hệ thống", "Đã rót đầy ly bia mát lạnh! 🍺");
         }
 
-        // ACTION: Send Wish / Quotes
-        function actionSendWish() {
-            const randomQuote = FUNNY_QUOTES[Math.floor(Math.random() * FUNNY_QUOTES.length)];
+        // Action: Order Food
+        function orderFood() {
+            const foodContainer = document.getElementById('food-items');
+            const randFood = foods[Math.floor(Math.random() * foods.length)];
             
-            // Create Floating Text Overlay
-            const wishesArea = document.getElementById('floatingWishesArea');
-            const el = document.createElement('div');
-            el.className = 'absolute text-yellow-300 font-extrabold text-sm md:text-base neon-title tracking-wide whitespace-nowrap floating-bubble';
-            el.style.left = Math.random() * 50 + 10 + '%';
-            el.innerHTML = `💬 ${userData.name}: "${randomQuote}"`;
-            wishesArea.appendChild(el);
+            if (foodContainer.children.length > 5) {
+                foodContainer.innerHTML = '';
+            }
 
-            setTimeout(() => el.remove(), 3000);
-            addChatMessage(userData.name, `"${randomQuote}"`);
+            const item = document.createElement('span');
+            item.innerText = randFood;
+            foodContainer.appendChild(item);
+
+            addChatMessage("Phục vụ", `Vừa lên món ngon ${randFood} cho bàn nhậu!`);
         }
 
-        // Food Modal & Ordering
-        function openFoodModal() { document.getElementById('foodModal').classList.remove('hidden'); }
-        function openKaraokeModal() { document.getElementById('karaokeModal').classList.remove('hidden'); }
-        function openChallengeModal() { document.getElementById('challengeModal').classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-        function orderFood(foodName, emoji) {
-            closeModal('foodModal');
-            const container = document.getElementById('tableDishes');
-            const emptyText = document.getElementById('emptyDishesText');
-            if (emptyText) emptyText.remove();
-
-            const dish = document.createElement('div');
-            dish.className = 'bg-slate-900/90 border border-amber-500/50 px-2.5 py-1 rounded-full text-xs flex items-center gap-1 shadow animate-bounce';
-            dish.innerHTML = `<span>${emoji}</span> <span class="text-amber-300 font-bold">${foodName}</span>`;
-            container.appendChild(dish);
-
-            showToastBanner(`🍲 Đã dâng món [${foodName}] thơm phức lên bàn nhậu!`);
-            addChatMessage('Phục Vụ Quán', `Đã dọn món ${foodName} ra bàn cho đại ca!`);
-        }
-
-        // Karaoke Logic
-        function singSong(songName) {
-            document.getElementById('lyricsBox').classList.remove('hidden');
-            document.getElementById('currentSongTitle').innerText = `🎤 Đang cất giọng: ${songName}`;
-            
-            const lyrics = [
-                "Zô 100% đi anh em ơi...",
-                "Đời này được mấy khi say cùng tri kỷ!",
-                "Hãy nâng ly lên cùng cất tiếng ca nào!"
+        // Action: Sing Karaoke
+        function singKaraoke() {
+            const songs = [
+                "Cắt Đôi Nỗi Sầu - Hát cùng anh em!",
+                "Hãy Ra Đây Mà Xem - Zô 100%!",
+                "Anh Em Cây Khế - Nhậu hết mình!",
+                "Nối Lại Tình Xưa - Nâng ly lên nào!"
             ];
-            
-            let i = 0;
-            const lineEl = document.getElementById('currentLyricLine');
-            lineEl.innerText = `"${lyrics[0]}"`;
-
-            showToastBanner(`🎤 ${userData.name} đang cầm mic hát bài "${songName}"!`);
-            addChatMessage(userData.name, `🎵 (Đang phiêu Karaoke): "${songName}"`);
+            const song = songs[Math.floor(Math.random() * songs.length)];
+            document.getElementById('toast-banner').innerText = `🎤 Đang phát Karaoke: "${song}"`;
         }
 
-        // Challenge Logic
-        function challengeUser(targetName) {
-            openChallengeModal();
-        }
-
-        function executeChallenge(targetName) {
-            closeModal('challengeModal');
-            AudioEngine.playCheer();
-            showToastBanner(`🔥 ${userData.name} vừa thách ${targetName} cụm ly 100%!`);
-            addChatMessage(userData.name, `🔥 Thách ${targetName} uống hết ly này không chớp mắt!`);
-        }
-
-        // Level Up Check
-        function checkLevelUp() {
-            const newLevel = Math.min(10, Math.floor(userData.mlDrunk / 300) + 1);
-            if (newLevel > userData.level) {
-                userData.level = newLevel;
-                showToastBanner(`🎉 CHÚC MỪNG! Bạn đã thăng cấp LV.${userData.level} (${TITLES[Math.min(TITLES.length-1, userData.level-1)]})`);
+        // Apply screen blur when drunk
+        function applyDrunkEffect() {
+            if (totalDrunkLevel > 30) {
+                const blurVal = (totalDrunkLevel - 30) / 25;
+                document.body.style.filter = `blur(${blurVal}px)`;
             }
         }
 
-        // Update Dynamic UI Components
-        function updateUI() {
-            // Stats
-            document.getElementById('userNameDisplay').innerText = userData.name;
-            document.getElementById('mainUserName').innerText = `Bạn (${userData.name})`;
-            document.getElementById('userLevelBadge').innerText = `LV.${userData.level}`;
-            document.getElementById('milliLitersDrunk').innerText = userData.mlDrunk.toLocaleString();
-            document.getElementById('totalToastsCount').innerText = totalToasts.toLocaleString();
-            document.getElementById('onlineCount').innerText = onlineCount;
-            
-            const titleIndex = Math.min(TITLES.length - 1, userData.level - 1);
-            document.getElementById('userTitle').innerText = TITLES[titleIndex];
-
-            // Glass Fill
-            document.getElementById('glassFillBar').style.width = userData.glassFilledPercent + '%';
-
-            // Drunkness Meter
-            const drunkBar = document.getElementById('drunkProgressBar');
-            const drunkText = document.getElementById('drunkPercentText');
-            const drunkBadge = document.getElementById('drunkBadge');
-            const mainScene = document.getElementById('mainScene');
-
-            drunkBar.style.width = userData.drunkPercent + '%';
-
-            let statusStr = "0% - Tỉnh Táo";
-            let filterClass = "";
-
-            if (userData.drunkPercent > 80) {
-                statusStr = `${userData.drunkPercent}% - Say Phê Phê (Ngã Ngửa)`;
-                drunkBadge.className = "absolute -bottom-2 bg-red-600 text-white font-black text-xs px-2 py-0.5 rounded-full border border-slate-900 shadow animate-pulse";
-                filterClass = "drunk-level-4";
-            } else if (userData.drunkPercent > 50) {
-                statusStr = `${userData.drunkPercent}% - Đã Có Men (Bay Bay)`;
-                drunkBadge.className = "absolute -bottom-2 bg-purple-600 text-white font-black text-xs px-2 py-0.5 rounded-full border border-slate-900 shadow";
-                filterClass = "drunk-level-3";
-            } else if (userData.drunkPercent > 25) {
-                statusStr = `${userData.drunkPercent}% - Tưng Tưng Sương Sương`;
-                drunkBadge.className = "absolute -bottom-2 bg-yellow-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded-full border border-slate-900 shadow";
-                filterClass = "drunk-level-2";
-            } else {
-                filterClass = "drunk-level-1";
-            }
-
-            drunkText.innerText = statusStr;
-            drunkBadge.innerText = `SAY ${userData.drunkPercent}%`;
-            mainScene.className = `relative flex-1 bg-gradient-to-b from-slate-950 via-slate-900 to-amber-950/40 flex flex-col items-center justify-center p-4 overflow-hidden drunk-filter ${filterClass}`;
-        }
-
-        // Helper: User Name Change
-        function changeUserName() {
-            const newName = prompt("Nhập biệt danh bàn nhậu của bạn:", userData.name);
-            if (newName && newName.trim() !== "") {
-                userData.name = newName.trim();
-                updateUI();
-                showToastBanner(`✨ Đã đổi tên thành: ${userData.name}`);
-            }
-        }
-
-        // Banner Toast System
-        function showToastBanner(msg) {
-            const container = document.getElementById('bannerContainer');
-            const banner = document.createElement('div');
-            banner.className = 'toast-banner bg-amber-500/90 border border-amber-300 text-slate-950 font-black px-4 py-2 rounded-2xl shadow-xl text-xs md:text-sm backdrop-blur-md flex items-center gap-2';
-            banner.innerHTML = `<i class="fa-solid fa-bell text-amber-950"></i> <span>${msg}</span>`;
-            
-            container.appendChild(banner);
-            setTimeout(() => banner.remove(), 4500);
-        }
-
-        // Live Chat System
-        function sendChatMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (text) {
-                addChatMessage(userData.name, text);
-                input.value = '';
-            }
-        }
-
+        // Chat Functions
         function addChatMessage(author, text) {
-            const chatBox = document.getElementById('chatBox');
+            const chatBox = document.getElementById('chat-messages');
             const msgEl = document.createElement('div');
-            msgEl.className = 'text-xs leading-relaxed';
-            
-            const isUser = author === userData.name;
-            const nameColor = isUser ? 'text-yellow-400 font-bold' : 'text-amber-300 font-semibold';
-            
-            msgEl.innerHTML = `<span class="${nameColor}">${author}:</span> <span class="text-slate-200">${text}</span>`;
+            msgEl.className = 'msg';
+            msgEl.innerHTML = `<div class="author">${author}:</div><div>${text}</div>`;
             chatBox.appendChild(msgEl);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // Simulate Live Pub Atmosphere (Bots chatting & random toasts)
-        function startBotSimulations() {
-            setInterval(() => {
-                const randomBot = BOT_NAMES[Math.floor(Math.random() * BOT_NAMES.length)];
-                const randomMsg = BOT_MESSAGES[Math.floor(Math.random() * BOT_MESSAGES.length)];
-                addChatMessage(randomBot, randomMsg);
-            }, 6000);
-
-            setInterval(() => {
-                totalToasts += Math.floor(Math.random() * 3) + 1;
-                onlineCount += Math.floor(Math.random() * 3) - 1;
-                updateUI();
-            }, 4000);
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (text) {
+                addChatMessage("Bạn", text);
+                document.getElementById('toast-banner').innerText = `💬 Bạn: "${text}"`;
+                input.value = '';
+            }
         }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        // Auto Bot Chat simulation
+        setInterval(() => {
+            const randMember = members[Math.floor(Math.random() * members.length)];
+            const randText = sampleChats[Math.floor(Math.random() * sampleChats.length)];
+            addChatMessage(randMember.name, randText);
+        }, 8000);
+
+        // Init
+        renderMembers();
     </script>
 </body>
 </html>
