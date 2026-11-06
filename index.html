@@ -3,766 +3,648 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUÁN NHẬU ONLINE THỨ 6 - REALTIME LIVE</title>
+    <title>QUÁN NHẬU ONLINE THỨ 6 - REALTIME</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Firebase App & Database (V9 Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
-        :root {
-            --bg-dark: #0a0714;
-            --panel-bg: rgba(18, 14, 38, 0.9);
-            --neon-gold: #ffb700;
-            --neon-orange: #ff7700;
-            --neon-pink: #ff007f;
-            --neon-blue: #00f3ff;
-            --neon-green: #39ff14;
-            --text-light: #f0f0ff;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #060913;
+            color: #f1f5f9;
+            overflow-x: hidden;
             user-select: none;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-            overflow-x: hidden;
-            transition: filter 0.5s ease;
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 3px; }
+
+        /* Gold & Neon Effects */
+        .neon-title {
+            color: #fbbf24;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(217, 119, 6, 0.4);
+        }
+        
+        .stage-border {
+            border: 2px solid #b45309;
+            box-shadow: 0 0 25px rgba(180, 83, 9, 0.25), inset 0 0 20px rgba(180, 83, 9, 0.15);
         }
 
-        /* Modal Chọn Tên */
-        .login-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.92);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(8px);
+        .inner-table-border {
+            border: 2px solid #92400e;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
         }
 
-        .login-box {
-            background: var(--panel-bg);
-            border: 2px solid var(--neon-gold);
-            box-shadow: 0 0 30px rgba(255, 183, 0, 0.4);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-        }
-
-        .login-box h2 {
-            color: var(--neon-gold);
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px var(--neon-gold);
-        }
-
-        .user-select-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-user {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--neon-gold);
-            color: #fff;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-user:hover {
-            background: var(--neon-gold);
-            color: #000;
-            box-shadow: 0 0 15px var(--neon-gold);
-        }
-
-        /* Top Header */
-        header {
-            display: grid;
-            grid-template-columns: 220px 1fr 140px;
-            align-items: center;
-            background: rgba(15, 12, 30, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 10px 20px;
-            margin-bottom: 15px;
-        }
-
-        .user-profile-tag {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .avatar-top {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #ff4500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .btn-change-name {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .header-title-box {
-            text-align: center;
-        }
-
-        .neon-app-title {
-            color: var(--neon-gold);
-            font-size: 1.6rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255, 183, 0, 0.6);
-        }
-
-        .header-slogan {
-            color: #aaa;
-            font-size: 0.8rem;
-            font-style: italic;
-        }
-
-        .btn-sound {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            justify-self: end;
-        }
-
-        /* Main Pub Stage */
-        .pub-stage {
-            background: rgba(15, 12, 30, 0.85);
-            border: 1px solid rgba(255, 183, 0, 0.2);
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 15px;
-            position: relative;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-        }
-
-        .stage-header-tag {
-            color: var(--neon-gold);
-            font-size: 0.9rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
-
-        /* GIAO DIỆN BÀN GỖ & LY BIA & MÓN ĂN */
-        .wood-table-container {
-            width: 100%;
-            max-width: 750px;
-            height: 250px;
-            background: radial-gradient(ellipse at center, #5c3517 0%, #2e1808 100%);
-            border-radius: 120px / 60px;
-            border: 10px solid #201004;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.9);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-
-        /* Ly bia trung tâm */
-        .beer-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            z-index: 5;
-        }
-
-        .beer-glass-img {
-            font-size: 4.8rem;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.7));
-        }
-
-        .cheers-badge {
-            background: var(--neon-orange);
-            color: #fff;
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 12px;
-            margin-top: -5px;
-            box-shadow: 0 0 10px var(--neon-orange);
-        }
-
-        /* Danh sách mồi ngon trên bàn */
-        .food-dishes-grid {
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: center;
-            pointer-events: none;
-        }
-
-        .dish-item {
-            font-size: 2.5rem;
-            filter: drop-shadow(0 6px 6px rgba(0,0,0,0.8));
-            animation: popIn 0.3s ease-out;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            padding: 8px;
-            border: 1px dashed rgba(255, 183, 0, 0.3);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0) rotate(-20deg); }
+        /* Glass Clink Animations */
+        @keyframes toastClinkLeft {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.3) rotate(-15deg) translateY(-10px); }
             100% { transform: scale(1) rotate(0deg); }
         }
-
-        .table-hint-text {
-            color: #888;
-            font-size: 0.8rem;
-            font-style: italic;
-            position: absolute;
-            bottom: 12px;
+        .clink-animate {
+            animation: toastClinkLeft 0.5s ease-in-out;
         }
 
-        /* Progress Bar Tửu Lượng */
-        .drunk-bar-box {
-            width: 100%;
-            max-width: 750px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        /* Drunk Effect Blur */
+        .drunk-filter {
+            transition: filter 0.5s ease, transform 0.5s ease;
+        }
+        .drunk-level-1 { filter: blur(0px); }
+        .drunk-level-2 { filter: blur(1px) contrast(105%); }
+        .drunk-level-3 { filter: blur(2.5px) hue-rotate(15deg); animation: sway 4s infinite ease-in-out; }
+        .drunk-level-4 { filter: blur(4px) hue-rotate(35deg); animation: sway 2s infinite ease-in-out; }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(1deg) scale(1.005); }
+            75% { transform: rotate(-1deg) scale(0.995); }
         }
 
-        .drunk-label {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #ccc;
-            white-space: nowrap;
+        /* Flying Toast Notification Banner */
+        @keyframes bannerSlide {
+            0% { transform: translateY(-100%) scale(0.9); opacity: 0; }
+            15% { transform: translateY(0) scale(1); opacity: 1; }
+            85% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100%) scale(0.9); opacity: 0; }
         }
-
-        .drunk-progress-bg {
-            flex: 1;
-            height: 12px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .drunk-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--neon-gold), var(--neon-orange));
-            border-radius: 6px;
-            transition: width 0.4s ease;
-        }
-
-        .drunk-status-text {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: var(--neon-gold);
-            white-space: nowrap;
-        }
-
-        /* Footer Grid: 3 Cột */
-        .bottom-grid {
-            display: grid;
-            grid-template-columns: 240px 1fr 300px;
-            gap: 15px;
-            flex: 1;
-        }
-
-        @media (max-width: 900px) {
-            .bottom-grid { grid-template-columns: 1fr; }
-        }
-
-        .panel-box {
-            background: rgba(15, 12, 30, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .panel-header {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: var(--neon-gold);
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* Cột 1: Danh sách hội bạn */
-        .member-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            overflow-y: auto;
-            max-height: 220px;
-        }
-
-        .member-card {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 6px;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .member-card .name { font-size: 0.85rem; font-weight: bold; }
-        .member-card .sub { font-size: 0.7rem; color: #888; }
-        .member-card .drunk { font-size: 0.8rem; color: var(--neon-gold); font-weight: bold; }
-
-        /* Cột 2: Khung Chat */
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            max-height: 170px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-
-        .chat-msg {
-            font-size: 0.8rem;
-            line-height: 1.3;
-            background: rgba(255,255,255,0.03);
-            padding: 6px 10px;
-            border-radius: 6px;
-        }
-
-        .chat-msg .author { color: var(--neon-blue); font-weight: bold; }
-
-        .chat-input-bar {
-            display: flex;
-            gap: 5px;
-        }
-
-        .chat-input-bar input {
-            flex: 1;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            padding: 6px 10px;
-            color: #fff;
-            font-size: 0.8rem;
-            outline: none;
-        }
-
-        .chat-input-bar button {
-            background: var(--neon-orange);
-            border: none;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* Cột 3: Nút Thao Tác Cụm Ly / Gọi Mồi */
-        .action-controls-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            height: 100%;
-        }
-
-        .btn-main-cheers {
-            background: linear-gradient(135deg, #ff9000, #ff4500);
-            border: none;
-            color: #fff;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: 900;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
-            text-transform: uppercase;
-        }
-
-        .btn-main-cheers:hover {
-            transform: translateY(-2deg);
-            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.6);
-        }
-
-        .sub-btn-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .btn-sub-action {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn-sub-action:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-karaoke {
-            background: rgba(180, 0, 255, 0.2);
-            border: 1px solid rgba(180, 0, 255, 0.4);
-            color: #e099ff;
-            padding: 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .btn-karaoke:hover {
-            background: rgba(180, 0, 255, 0.4);
+        .toast-banner {
+            animation: bannerSlide 4s ease-in-out forwards;
         }
     </style>
 </head>
-<body>
+<body class="h-screen w-screen flex flex-col justify-between overflow-hidden bg-slate-950 text-slate-100 relative p-2 sm:p-4">
 
-    <!-- Modal Chọn Danh Tính -->
-    <div class="login-overlay" id="login-overlay">
-        <div class="login-box">
-            <h2>CHỌN TÊN ĐỂ VÀO BÀN NHẬU</h2>
-            <p style="font-size: 0.85rem; color: #ccc;">Vui lòng chọn danh tính của bạn:</p>
-            <div class="user-select-grid" id="user-select-grid"></div>
+    <!-- Modal 0: LOGIN - CHỌN DANH TÍNH TÀI KHOẢN -->
+    <div id="loginModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-center relative overflow-hidden">
+            <div class="absolute -top-12 -left-12 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl"></div>
+            <h2 class="text-2xl font-black text-amber-400 neon-title uppercase mb-2">🍻 VÀO BÀN NHẬU THỨ 6 🍻</h2>
+            <p class="text-xs text-slate-300 mb-5">Chào mừng anh em! Hãy chọn danh tính của bạn để tham gia bàn nhậu realtime:</p>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4" id="loginUserButtons">
+                <!-- JS Populated Member Buttons -->
+            </div>
+            
+            <p class="text-[11px] text-amber-500/70 italic">* Tất cả thành viên trong bàn sẽ thấy trực tiếp hành động cụm ly, rót bia & nhắn tin của bạn!</p>
         </div>
     </div>
 
-    <!-- Header Trực Quan -->
-    <header>
-        <div class="user-profile-tag">
-            <div class="avatar-top" id="user-avatar">?</div>
+    <!-- Banner Toast Notification Top Center -->
+    <div id="bannerContainer" class="absolute top-16 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none w-full max-w-xl flex flex-col items-center gap-2"></div>
+
+    <!-- Header Navigation (Khớp 100% ảnh) -->
+    <header class="w-full bg-slate-950 px-3 py-2 flex items-center justify-between z-30 mb-2">
+        <!-- Current User Info (Góc trái) -->
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-full bg-slate-900 border-2 border-yellow-500/80 flex items-center justify-center font-bold text-amber-300 text-sm shadow">
+                <span id="userAvatarBox">?</span>
+            </div>
             <div>
-                <div style="font-size: 0.85rem; font-weight: bold;" id="user-name-display">Đang tải...</div>
-                <button class="btn-change-name" onclick="location.reload()">Đổi tên</button>
-            </div>
-        </div>
-
-        <div class="header-title-box">
-            <div class="neon-app-title">🍺 QUÁN NHẬU ONLINE THỨ 6 🍺</div>
-            <div class="header-slogan">"Zô 100% - Không Say Không Về - Đã Nhậu Là Không Lái Xe"</div>
-        </div>
-
-        <button class="btn-sound" onclick="playClinkSound()">🔊 Âm thanh</button>
-    </header>
-
-    <!-- Khu Vực Bàn Nhậu - Ly Bia - Mồi Ngon -->
-    <div class="pub-stage">
-        <div class="stage-header-tag">🍺 BÀN NHẬU TRỰC TUYẾN HỘI ANH EM (7 CHIẾN HỮU)</div>
-
-        <div class="wood-table-container" onclick="sendAction('cheers')">
-            <!-- Mồi ngon xuất hiện ở đây -->
-            <div class="food-dishes-grid" id="food-dishes-grid"></div>
-
-            <!-- Ly bia trung tâm -->
-            <div class="beer-container">
-                <div class="beer-glass-img" id="beer-glass">🍺</div>
-                <div class="cheers-badge">Bấm để Cụm Ly Zô!</div>
-            </div>
-
-            <div class="table-hint-text" id="table-hint">(Bàn chưa có mồi, bấm "Gọi Mồi Ngon" bên dưới!)</div>
-        </div>
-
-        <!-- Thanh tửu lượng -->
-        <div class="drunk-bar-box">
-            <div class="drunk-label">🍺 Tửu Lượng Bàn Nhậu:</div>
-            <div class="drunk-progress-bg">
-                <div class="drunk-progress-fill" id="drunk-fill"></div>
-            </div>
-            <div class="drunk-status-text" id="drunk-status">0% - Tỉnh Táo</div>
-        </div>
-    </div>
-
-    <!-- 3 Cột Chân Trang -->
-    <div class="bottom-grid">
-        <!-- Cột 1: Danh sách hội anh em -->
-        <div class="panel-box">
-            <div class="panel-header">
-                <span>👨‍👦‍👦 Hội Chiến Hữu (7)</span>
-                <span style="color: var(--neon-green);" id="online-count">• 1 Online</span>
-            </div>
-            <div class="member-list" id="member-list"></div>
-        </div>
-
-        <!-- Cột 2: Trò chuyện Realtime -->
-        <div class="panel-box">
-            <div class="panel-header">
-                <span>💬 Trò Chuyện Realtime</span>
-                <span style="font-size: 0.75rem; color: #888;">Trực tiếp</span>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="chat-msg"><span class="author">Chủ quán:</span> "Chào mừng các chiến hữu! Chọn tên để Zô 100% cùng bàn nhậu nào!"</div>
-            </div>
-            <div class="chat-input-bar">
-                <input type="text" id="chat-input" placeholder="Nhắn tin trò chuyện với bàn nhậu..." onkeypress="handleKeyPress(event)">
-                <button onclick="sendMessage()">➤</button>
-            </div>
-        </div>
-
-        <!-- Cột 3: Nút điều khiển -->
-        <div class="panel-box">
-            <div class="action-controls-grid">
-                <button class="btn-main-cheers" onclick="sendAction('cheers')">
-                    <span>🍺</span> CỤM LY 100%
-                </button>
-                <div class="sub-btn-row">
-                    <button class="btn-sub-action" onclick="sendAction('pour')">
-                        <span>🍶</span> Rót Đầy Bia
-                    </button>
-                    <button class="btn-sub-action" onclick="sendAction('food')">
-                        <span>🍗</span> Gọi Mồi Ngon
+                <div class="flex items-center gap-2">
+                    <h2 class="font-extrabold text-amber-400 text-sm" id="currentUserNameDisplay">Chưa Đăng Nhập</h2>
+                    <button onclick="reopenLoginModal()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 transition">
+                        Đổi tên
                     </button>
                 </div>
-                <button class="btn-karaoke" onclick="sendAction('karaoke')">
-                    🎤 Bật Karaoke Bàn Nhậu
+                <div class="text-[11px] text-emerald-400 flex items-center gap-1 mt-0.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="syncStatusText">Đồng bộ Realtime Online</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Title -->
+        <div class="flex flex-col items-center">
+            <h1 class="text-xl sm:text-2xl font-black text-amber-400 neon-title uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-beer-mug-empty text-yellow-400"></i> QUÁN NHẬU ONLINE THỨ 6
+            </h1>
+            <p class="text-[11px] text-amber-200/70 italic font-medium">"Zô 100% - Không Say Không Về - Đã Nhậu Là Không Lái Xe"</p>
+        </div>
+
+        <!-- Mute Audio Toggle (Góc phải) -->
+        <div class="flex items-center gap-2">
+            <button onclick="toggleAudio()" id="audioToggleBtn" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-full border border-amber-500/40 text-xs font-bold flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-volume-high" id="audioIcon"></i>
+                <span>Âm thanh</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Pub Stage (Bàn nhậu ở trên) -->
+    <main id="mainScene" class="relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter mb-3">
+        <!-- Stage Title -->
+        <div class="text-center font-black text-amber-500/90 tracking-widest text-xs sm:text-sm uppercase mb-2">
+            🍺 BÀN NHẬU TRỰC TUYẾN HỘI ANH EM (7 CHIẾN HỮU)
+        </div>
+
+        <!-- Central Inner Wood Table -->
+        <div class="w-full flex-1 bg-amber-950/40 rounded-2xl inner-table-border p-4 flex flex-col items-center justify-center relative min-h-[220px] my-auto">
+            
+            <!-- Animated Interactive Beer Glass -->
+            <div class="relative flex flex-col items-center cursor-pointer group" onclick="actionCheers100()">
+                <!-- Large Glass SVG / Emoji -->
+                <div id="centerBeerGlass" class="text-6xl sm:text-7xl transition-all duration-300 transform group-hover:scale-110 drop-shadow-lg">
+                    🍺
+                </div>
+                <!-- Button attached on glass -->
+                <button class="mt-2 bg-slate-950/90 border border-amber-500/60 text-amber-300 font-bold px-3 py-1 rounded-full text-xs shadow-md group-hover:bg-amber-500 group-hover:text-slate-950 transition">
+                    Bấm để Cụm Ly Zô!
+                </button>
+                <span id="clinkTextEffect" class="absolute -top-8 text-yellow-300 font-extrabold text-sm opacity-0 transition-all pointer-events-none whitespace-nowrap neon-title">
+                    💥 ZÔ 100%! 💥
+                </span>
+            </div>
+
+            <!-- Ordered Food Dishes / Empty notice -->
+            <div id="tableDishes" class="flex items-center justify-center gap-2 mt-4 flex-wrap text-amber-200/60 italic text-xs z-10">
+                <span id="emptyDishesText">(Bàn chưa có mồi, bấm "Gọi Mồi Ngon" bên dưới!)</span>
+            </div>
+        </div>
+
+        <!-- Drunk Level Progress Bar at stage bottom -->
+        <div class="w-full mt-4 px-2">
+            <div class="flex justify-between text-xs font-bold text-amber-400 mb-1">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-beer-mug-empty"></i> Tửu Lượng Bàn Nhậu:</span>
+                <span id="drunkPercentText" class="text-emerald-400">0% - Tỉnh Táo</span>
+            </div>
+            <div class="w-full bg-slate-900 h-2.5 rounded-full border border-amber-900 overflow-hidden">
+                <div id="drunkProgressBar" class="bg-gradient-to-r from-emerald-500 via-amber-400 to-red-600 h-full w-0 transition-all duration-500"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Split Grid (3 cột khớp 100% giao diện ảnh) -->
+    <footer class="w-full grid grid-cols-1 lg:grid-cols-12 gap-3 z-30">
+        
+        <!-- Cột 1: Hội chiến hữu (7) -->
+        <div class="lg:col-span-3 bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col h-48 sm:h-52">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                <div class="text-xs font-black text-amber-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-users"></i> Hội Chiến Hữu (7)
+                </div>
+                <span class="text-[11px] text-emerald-400 font-bold" id="onlineCountBadge">● 1 Online</span>
+            </div>
+            <div id="memberListContainer" class="flex-1 overflow-y-auto space-y-1.5 pr-1 text-xs">
+                <!-- JS Populated 7 Members -->
+            </div>
+        </div>
+
+        <!-- Cột 2: Trò Chuyện Realtime -->
+        <div class="lg:col-span-5 bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col h-48 sm:h-52">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                <div class="text-xs font-black text-amber-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-comments"></i> Trò Chuyện Realtime
+                </div>
+                <span class="text-[10px] text-slate-400">Trực tiếp</span>
+            </div>
+            <div id="chatBox" class="flex-1 overflow-y-auto space-y-1.5 pr-1 text-xs">
+                <div class="text-slate-400 italic text-[11px]">Chủ quán: "Chào mừng các chiến hữu! Chọn tên để Zô 100% cùng bàn nhậu nào!"</div>
+            </div>
+            <form id="chatForm" onsubmit="sendChatMessage(event)" class="mt-2 flex gap-1.5">
+                <input type="text" id="chatInput" placeholder="Nhắn tin trò chuyện với bàn nhậu..." class="flex-1 bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-400">
+                <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition flex items-center justify-center">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Cột 3: Cụm nút bấm điều khiển (Khớp 100% thiết kế ảnh) -->
+        <div class="lg:col-span-4 grid grid-cols-2 gap-2 h-48 sm:h-52">
+            <!-- Nút CỤM LY 100% Cam Vàng Rực Rỡ (Hàng 1 full span) -->
+            <button onclick="actionCheers100()" class="col-span-2 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-2xl p-3 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-98 transition border border-amber-300">
+                <i class="fa-solid fa-beer-mug-empty text-xl"></i>
+                <span class="text-sm tracking-wide uppercase">CỤM LY 100%</span>
+            </button>
+
+            <!-- Nút Rót Đầy Bia -->
+            <button onclick="actionPourBeer()" class="bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-amber-400 font-bold rounded-2xl p-2 flex flex-col items-center justify-center text-xs active:scale-95 transition">
+                <i class="fa-solid fa-bottle-droplet text-amber-400 text-base mb-1"></i>
+                <span>Rót Đầy Bia</span>
+            </button>
+
+            <!-- Nút Gọi Mồi Ngon -->
+            <button onclick="openFoodModal()" class="bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-amber-400 font-bold rounded-2xl p-2 flex flex-col items-center justify-center text-xs active:scale-95 transition">
+                <i class="fa-solid fa-utensils text-amber-400 text-base mb-1"></i>
+                <span>Gọi Mồi Ngon</span>
+            </button>
+
+            <!-- Nút Bật Karaoke Bàn Nhậu (Hàng cuối full span) -->
+            <button onclick="openKaraokeModal()" class="col-span-2 bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-pink-400 font-bold rounded-2xl p-2.5 flex items-center justify-center gap-2 text-xs active:scale-98 transition">
+                <i class="fa-solid fa-microphone-lines text-pink-400 text-sm"></i>
+                <span>Bật Karaoke Bàn Nhậu</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: GỌI MỒI MENU -->
+    <div id="foodModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
+            <button onclick="closeModal('foodModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-lg font-extrabold text-amber-400 flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-utensils"></i> Thực Đơn Mồi Nhắm Bén (Đồng Bộ Bàn)
+            </h3>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="actionOrderFood('Lẩu Thái Chua Cay', '🍲')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
+                    <span class="text-3xl mb-1">🍲</span>
+                    <span class="text-xs font-bold text-amber-200">Lẩu Thái Chua Cay</span>
+                </button>
+                <button onclick="actionOrderFood('Bò Nướng Tảng', '🥩')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
+                    <span class="text-3xl mb-1">🥩</span>
+                    <span class="text-xs font-bold text-amber-200">Bò Nướng Tảng</span>
+                </button>
+                <button onclick="actionOrderFood('Đậu Hũ Lướt Ván', '🧈')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
+                    <span class="text-3xl mb-1">🧈</span>
+                    <span class="text-xs font-bold text-amber-200">Đậu Hũ Lướt Ván</span>
+                </button>
+                <button onclick="actionOrderFood('Chân Gà Sả Tắc', '🐓')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
+                    <span class="text-3xl mb-1">🐓</span>
+                    <span class="text-xs font-bold text-amber-200">Chân Gà Sả Tắc</span>
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- MODAL 2: KARAOKE -->
+    <div id="karaokeModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border-2 border-pink-500/60 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
+            <button onclick="closeModal('karaokeModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-lg font-extrabold text-pink-400 flex items-center gap-2 mb-3">
+                <i class="fa-solid fa-microphone-lines"></i> Chọn Bài Hát Karaoke
+            </h3>
+            <div class="space-y-2">
+                <button onclick="actionSingKaraoke('Hãy Ra Đây Uống Cùng Anh')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
+                    <span class="text-xs font-bold text-pink-300">1. Hãy Ra Đây Uống Cùng Anh</span>
+                    <i class="fa-solid fa-play text-pink-400"></i>
+                </button>
+                <button onclick="actionSingKaraoke('Nối Lại Tình Xưa (Phiên bản Bàn Nhậu)')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
+                    <span class="text-xs font-bold text-pink-300">2. Nối Lại Tình Xưa</span>
+                    <i class="fa-solid fa-play text-pink-400"></i>
+                </button>
+                <button onclick="actionSingKaraoke('Say Tình - Đàm Vĩnh Hưng')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
+                    <span class="text-xs font-bold text-pink-300">3. Say Tình</span>
+                    <i class="fa-solid fa-play text-pink-400"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Realtime Engine & Logic -->
     <script>
-        const membersList = ["Thanh Quí", "Quang Hoà", "Lê Hoà", "Thế Vũ", "Thanh Chính", "Trọng Tình", "Đình Dũng"];
-        const memberStats = {};
-        membersList.forEach(m => memberStats[m] = { online: false, drunk: 0 });
+        // 7 Fixed Members list as in image
+        const FIXED_MEMBERS = [
+            "Thanh Quí", "Quang Hoà", "Lê Hoàng", 
+            "Thế Vũ", "Thanh Chính", "Trọng Tình", "Đình Dũng"
+        ];
 
         let currentUser = null;
-        let totalDrunkLevel = 0;
-        const foodList = ["🍗 Cánh Gà", "🥩 Bò Nướng", "🦪 Hàu Nướng", "🦐 Tôm Hấp", "🦑 Mực Nướng", "🥜 Đậu Phộng", "🍢 Xiên Que"];
+        let audioEnabled = true;
 
-        // BroadcastChannel & WebSocket đồng bộ
-        const bc = new BroadcastChannel('quan_nhau_channel');
-        const ws = new WebSocket('wss://free.chatws.com');
-
-        // Tạo nút chọn tên
-        const grid = document.getElementById('user-select-grid');
-        membersList.forEach(name => {
-            const btn = document.createElement('button');
-            btn.className = 'btn-user';
-            btn.innerText = name;
-            btn.onclick = () => selectUser(name);
-            grid.appendChild(btn);
+        // Member State Store
+        let memberStates = {};
+        FIXED_MEMBERS.forEach(name => {
+            memberStates[name] = { drunk: 0, online: false };
         });
 
-        // Âm thanh cụm ly
-        function playClinkSound() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
+        // Setup BroadcastChannel for Instant Tab-to-Tab Sync Fallback
+        const broadcastChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('quan_nhau_online_sync') : null;
+
+        // Setup Public Firebase Realtime Config
+        const firebaseConfig = {
+            databaseURL: "https://quan-nhau-online-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        let db = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch (e) {
+            console.log("Firebase initialized in offline mode");
+        }
+
+        // Web Audio Synthesizer (Clink FX)
+        const AudioEngine = {
+            ctx: null,
+            init() {
+                if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            },
+            playClink() {
+                if (!audioEnabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(1200, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.frequency.setValueAtTime(2200, now);
+                osc.frequency.exponentialRampToValueAtTime(1100, now + 0.15);
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
                 osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.3);
-            } catch(e) {}
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.5);
+            },
+            playPour() {
+                if (!audioEnabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                for(let i = 0; i < 4; i++) {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(450 + Math.random() * 200, now + i * 0.08);
+                    gain.gain.setValueAtTime(0.12, now + i * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.1);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + i * 0.08);
+                    osc.stop(now + i * 0.08 + 0.1);
+                }
+            }
+        };
+
+        // App Init
+        window.addEventListener('DOMContentLoaded', () => {
+            initLoginButtons();
+            renderMembersUI();
+            setupRealtimeListeners();
+        });
+
+        // Initialize User Buttons in Login Modal
+        function initLoginButtons() {
+            const container = document.getElementById('loginUserButtons');
+            container.innerHTML = '';
+            FIXED_MEMBERS.forEach(name => {
+                const btn = document.createElement('button');
+                btn.className = 'bg-slate-800 hover:bg-amber-500 hover:text-slate-950 border border-amber-500/40 text-amber-300 font-bold p-3 rounded-2xl text-xs flex flex-col items-center justify-center gap-1 transition transform active:scale-95 shadow';
+                btn.innerHTML = `<span class="w-8 h-8 rounded-full bg-slate-900 border border-amber-400 flex items-center justify-center text-sm">${name.charAt(0)}</span><span>${name}</span>`;
+                btn.onclick = () => selectUser(name);
+                container.appendChild(btn);
+            });
         }
 
         function selectUser(name) {
             currentUser = name;
-            document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('user-name-display').innerText = currentUser;
-            document.getElementById('user-avatar').innerText = currentUser.charAt(0);
+            memberStates[currentUser].online = true;
+
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('currentUserNameDisplay').innerText = currentUser;
+            document.getElementById('userAvatarBox').innerText = currentUser.charAt(0);
+
+            // Notify Table
+            dispatchRealtimeEvent('JOIN', { author: currentUser, text: `vừa gia nhập bàn nhậu!` });
             
-            memberStats[currentUser].online = true;
-            renderMembers();
-
-            broadcast({ type: 'JOIN', user: currentUser });
-
-            setInterval(() => {
-                if (currentUser) broadcast({ type: 'PING', user: currentUser });
-            }, 4000);
+            // Sync user presence to Firebase if available
+            if (db) {
+                const userRef = db.ref('presence/' + currentUser);
+                userRef.set({ name: currentUser, online: true, drunk: memberStates[currentUser].drunk });
+                userRef.onDisconnect().set({ name: currentUser, online: false, drunk: memberStates[currentUser].drunk });
+            }
+            renderMembersUI();
         }
 
-        function broadcast(data) {
-            const payload = JSON.stringify(data);
-            bc.postMessage(payload);
-            if (ws.readyState === WebSocket.OPEN) ws.send(payload);
+        function reopenLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
         }
 
-        function handleIncomingData(raw) {
-            try {
-                const data = typeof raw === 'string' ? JSON.parse(raw) : raw;
-                if (!data || !data.type) return;
+        // Render 7 Member Cards in Left Panel
+        function renderMembersUI() {
+            const container = document.getElementById('memberListContainer');
+            container.innerHTML = '';
+            
+            let totalDrunk = 0;
+            let onlineCount = 0;
 
-                if (data.user && memberStats[data.user]) {
-                    memberStats[data.user].online = true;
-                }
+            FIXED_MEMBERS.forEach(name => {
+                const st = memberStates[name] || { drunk: 0, online: false };
+                if (st.online) onlineCount++;
+                totalDrunk += st.drunk;
 
-                switch (data.type) {
-                    case 'JOIN':
-                        addChatMessage("Hệ thống", `${data.user} vừa gia nhập bàn nhậu! 🍻`);
-                        renderMembers();
-                        break;
-                    case 'PING':
-                        renderMembers();
-                        break;
-                    case 'CHAT':
-                        addChatMessage(data.user, data.text);
-                        break;
-                    case 'ACTION':
-                        executeAction(data.user, data.action);
-                        break;
-                }
-            } catch (e) {}
-        }
-
-        bc.onmessage = (e) => handleIncomingData(e.data);
-        ws.onmessage = (e) => handleIncomingData(e.data);
-
-        function renderMembers() {
-            let onlineCnt = 0;
-            const listEl = document.getElementById('member-list');
-            listEl.innerHTML = membersList.map(name => {
-                const isOnline = memberStats[name].online;
-                if (isOnline) onlineCnt++;
-                return `
-                    <div class="member-card" style="opacity: ${isOnline ? 1 : 0.4}">
-                        <div>
-                            <div class="name">${name}</div>
-                            <div class="sub">${isOnline ? '🟢 Đang nhậu' : '⚪ Vắng mặt'}</div>
+                const isMe = name === currentUser;
+                const card = document.createElement('div');
+                card.className = `p-2 rounded-xl border ${isMe ? 'bg-amber-500/10 border-amber-500/60' : 'bg-slate-900/60 border-slate-800'} flex items-center justify-between`;
+                
+                card.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-full bg-slate-800 border ${st.online ? 'border-emerald-400 text-emerald-300' : 'border-slate-700 text-slate-500'} flex items-center justify-center font-bold text-xs">
+                            ${name.charAt(0)}
                         </div>
-                        <div class="drunk">🍺 ${memberStats[name].drunk}%</div>
+                        <div>
+                            <div class="font-extrabold text-xs ${isMe ? 'text-amber-400' : 'text-slate-200'}">${name}</div>
+                            <div class="text-[10px] ${st.online ? 'text-emerald-400' : 'text-slate-500'}">${st.online ? '● Đang nhậu' : '○ Vắng mặt'}</div>
+                        </div>
                     </div>
+                    <div class="text-xs font-bold text-amber-400">🍺 ${st.drunk}%</div>
                 `;
-            }).join('');
-            document.getElementById('online-count').innerText = `• ${onlineCnt} Online`;
-        }
+                container.appendChild(card);
+            });
 
-        function executeAction(user, action) {
-            const glass = document.getElementById('beer-glass');
+            document.getElementById('onlineCountBadge').innerText = `● ${onlineCount} Online`;
+            
+            // Average Drunk Level for table
+            const avgDrunk = Math.min(100, Math.floor(totalDrunk / FIXED_MEMBERS.length));
+            document.getElementById('drunkProgressBar').style.width = avgDrunk + '%';
+            document.getElementById('drunkPercentText').innerText = `${avgDrunk}% - ${avgDrunk > 50 ? 'Say Phê Phê' : 'Tỉnh Táo'}`;
 
-            if (memberStats[user]) {
-                memberStats[user].drunk = Math.min(100, memberStats[user].drunk + 10);
-            }
-            totalDrunkLevel = Math.min(100, totalDrunkLevel + 4);
-            updateDrunkBar();
-            renderMembers();
-
-            if (action === 'cheers') {
-                playClinkSound();
-                glass.style.transform = 'scale(1.4) rotate(-20deg)';
-                setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 250);
-                addChatMessage(user, "vừa CỤM LY ZÔ 100%! 💥🍻");
-            } else if (action === 'pour') {
-                glass.style.transform = 'scale(1.2) rotate(20deg)';
-                setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 250);
-                addChatMessage(user, "vừa rót đầy ly bia mát lạnh! 🍺");
-            } else if (action === 'food') {
-                const foodGrid = document.getElementById('food-dishes-grid');
-                const randDish = foodList[Math.floor(Math.random() * foodList.length)];
-                
-                if (foodGrid.children.length >= 6) foodGrid.innerHTML = '';
-                
-                const dishEl = document.createElement('div');
-                dishEl.className = 'dish-item';
-                dishEl.innerText = randDish.split(' ')[0];
-                foodGrid.appendChild(dishEl);
-
-                document.getElementById('table-hint').innerText = `(Món vừa lên: ${randDish})`;
-                addChatMessage(user, `vừa gọi món ngon: ${randDish}! 🍖`);
-            } else if (action === 'karaoke') {
-                addChatMessage(user, "bật Karaoke bàn nhậu hát sương sương! 🎤");
+            // Drunk Effect Filter for Screen
+            if (currentUser && memberStates[currentUser]) {
+                const myDrunk = memberStates[currentUser].drunk;
+                const scene = document.getElementById('mainScene');
+                if (myDrunk > 70) scene.className = "relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter drunk-level-4 mb-3";
+                else if (myDrunk > 40) scene.className = "relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter drunk-level-3 mb-3";
+                else if (myDrunk > 20) scene.className = "relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter drunk-level-2 mb-3";
+                else scene.className = "relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter drunk-level-1 mb-3";
             }
         }
 
-        function sendAction(action) {
-            if (!currentUser) return alert("Vui lòng chọn tên trước!");
-            executeAction(currentUser, action);
-            broadcast({ type: 'ACTION', user: currentUser, action: action });
+        // Realtime Event Broadcaster & Listener
+        function dispatchRealtimeEvent(type, payload) {
+            const data = { type, payload, timestamp: Date.now() };
+
+            // 1. BroadcastChannel (Same browser tabs sync)
+            if (broadcastChannel) broadcastChannel.postMessage(data);
+
+            // 2. Firebase Database Sync (Cross-device sync)
+            if (db) {
+                db.ref('pub_events').push(data);
+            }
+
+            // Handle locally immediately
+            handleRealtimeEvent(data);
         }
 
-        function sendMessage() {
-            if (!currentUser) return alert("Vui lòng chọn tên trước!");
-            const input = document.getElementById('chat-input');
+        function setupRealtimeListeners() {
+            // Listen to BroadcastChannel
+            if (broadcastChannel) {
+                broadcastChannel.onmessage = (event) => {
+                    if (event.data && event.data.payload.author !== currentUser) {
+                        handleRealtimeEvent(event.data);
+                    }
+                };
+            }
+
+            // Listen to Firebase Realtime Database
+            if (db) {
+                db.ref('pub_events').limitToLast(1).on('child_added', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data && data.payload && data.payload.author !== currentUser) {
+                        handleRealtimeEvent(data);
+                    }
+                });
+
+                // Listen to presence
+                db.ref('presence').on('value', (snapshot) => {
+                    const val = snapshot.val() || {};
+                    Object.keys(val).forEach(name => {
+                        if (memberStates[name]) {
+                            memberStates[name].online = val[name].online;
+                            if (val[name].drunk !== undefined) memberStates[name].drunk = val[name].drunk;
+                        }
+                    });
+                    renderMembersUI();
+                });
+            }
+        }
+
+        // Handle Realtime Events on UI
+        function handleRealtimeEvent(data) {
+            const { type, payload } = data;
+            const author = payload.author || "Chiến hữu";
+
+            if (type === 'CHEERS') {
+                AudioEngine.playClink();
+                triggerClinkEffect(author);
+                addChatMessage(author, "vừa CỤM LY ZÔ 100%! 💥🍻");
+                showBannerToast(`💥 ${author} vừa cụm ly ZÔ 100%!`);
+                
+                // Update Drunk State
+                if (memberStates[author]) {
+                    memberStates[author].drunk = Math.min(100, memberStates[author].drunk + 15);
+                    memberStates[author].online = true;
+                }
+                renderMembersUI();
+            }
+            else if (type === 'POUR') {
+                AudioEngine.playPour();
+                addChatMessage(author, "vừa rót đầy tràn bọt ly bia mát lạnh! 🍺");
+                showBannerToast(`🍺 ${author} vừa rót đầy ly bia!`);
+            }
+            else if (type === 'FOOD') {
+                renderFoodOnTable(payload.foodName, payload.emoji);
+                addChatMessage(author, `gọi món [${payload.emoji} ${payload.foodName}] lên bàn nhậu!`);
+                showBannerToast(`🍲 ${author} vừa gọi món ${payload.foodName}!`);
+            }
+            else if (type === 'KARAOKE') {
+                addChatMessage(author, `🎵 (Karaoke): "${payload.songName}"`);
+                showBannerToast(`🎤 ${author} đang hát Karaoke bài: "${payload.songName}"`);
+            }
+            else if (type === 'CHAT') {
+                addChatMessage(author, payload.text);
+            }
+            else if (type === 'JOIN') {
+                if (memberStates[author]) memberStates[author].online = true;
+                addChatMessage("Hệ thống", `${author} ${payload.text}`);
+                renderMembersUI();
+            }
+        }
+
+        // Actions Triggered by User
+        function actionCheers100() {
+            if (!currentUser) return reopenLoginModal();
+            dispatchRealtimeEvent('CHEERS', { author: currentUser });
+        }
+
+        function actionPourBeer() {
+            if (!currentUser) return reopenLoginModal();
+            dispatchRealtimeEvent('POUR', { author: currentUser });
+        }
+
+        function actionOrderFood(foodName, emoji) {
+            closeModal('foodModal');
+            if (!currentUser) return reopenLoginModal();
+            dispatchRealtimeEvent('FOOD', { author: currentUser, foodName, emoji });
+        }
+
+        function actionSingKaraoke(songName) {
+            closeModal('karaokeModal');
+            if (!currentUser) return reopenLoginModal();
+            dispatchRealtimeEvent('KARAOKE', { author: currentUser, songName });
+        }
+
+        function sendChatMessage(e) {
+            e.preventDefault();
+            if (!currentUser) return reopenLoginModal();
+            const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if (text) {
-                addChatMessage(currentUser, text);
-                broadcast({ type: 'CHAT', user: currentUser, text: text });
+                dispatchRealtimeEvent('CHAT', { author: currentUser, text });
                 input.value = '';
             }
         }
 
+        // UI Helpers & Visual FX
+        function triggerClinkEffect(author) {
+            const glass = document.getElementById('centerBeerGlass');
+            const txt = document.getElementById('clinkTextEffect');
+            
+            glass.classList.add('clink-animate');
+            txt.innerText = `💥 ${author} ZÔ 100%! 💥`;
+            txt.style.opacity = '1';
+
+            setTimeout(() => {
+                glass.classList.remove('clink-animate');
+                txt.style.opacity = '0';
+            }, 600);
+        }
+
+        function renderFoodOnTable(foodName, emoji) {
+            const container = document.getElementById('tableDishes');
+            const emptyText = document.getElementById('emptyDishesText');
+            if (emptyText) emptyText.remove();
+
+            const dish = document.createElement('div');
+            dish.className = 'bg-slate-950 border border-amber-500/50 px-3 py-1 rounded-full text-xs flex items-center gap-1 shadow-lg animate-bounce';
+            dish.innerHTML = `<span>${emoji}</span> <span class="text-amber-300 font-bold">${foodName}</span>`;
+            container.appendChild(dish);
+        }
+
+        function showBannerToast(msg) {
+            const container = document.getElementById('bannerContainer');
+            const banner = document.createElement('div');
+            banner.className = 'toast-banner bg-amber-500/95 border border-amber-300 text-slate-950 font-black px-4 py-2 rounded-2xl shadow-2xl text-xs sm:text-sm backdrop-blur-md flex items-center gap-2';
+            banner.innerHTML = `<i class="fa-solid fa-beer-mug-empty text-amber-950"></i> <span>${msg}</span>`;
+            
+            container.appendChild(banner);
+            setTimeout(() => banner.remove(), 4000);
+        }
+
         function addChatMessage(author, text) {
-            const chatBox = document.getElementById('chat-messages');
+            const chatBox = document.getElementById('chatBox');
             const msgEl = document.createElement('div');
-            msgEl.className = 'chat-msg';
-            msgEl.innerHTML = `<span class="author">${author}:</span> ${text}`;
+            msgEl.className = 'text-xs leading-relaxed';
+            
+            const isMe = author === currentUser;
+            const nameColor = isMe ? 'text-yellow-400 font-bold' : 'text-amber-300 font-semibold';
+            
+            msgEl.innerHTML = `<span class="${nameColor}">${author}:</span> <span class="text-slate-200">${text}</span>`;
             chatBox.appendChild(msgEl);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        function updateDrunkBar() {
-            const fill = document.getElementById('drunk-fill');
-            const status = document.getElementById('drunk-status');
-            fill.style.width = totalDrunkLevel + '%';
+        function openFoodModal() { document.getElementById('foodModal').classList.remove('hidden'); }
+        function openKaraokeModal() { document.getElementById('karaokeModal').classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-            if (totalDrunkLevel < 30) status.innerText = `${totalDrunkLevel}% - Tỉnh Táo`;
-            else if (totalDrunkLevel < 70) status.innerText = `${totalDrunkLevel}% - Sương Sương 🥴`;
-            else status.innerText = `${totalDrunkLevel}% - Tới Bến 🚀`;
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            document.getElementById('audioIcon').className = audioEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
         }
-
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') sendMessage();
-        }
-
-        renderMembers();
     </script>
 </body>
 </html>
