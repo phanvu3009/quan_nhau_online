@@ -100,7 +100,7 @@
     <!-- Banner Toast Notification Top Center -->
     <div id="bannerContainer" class="absolute top-16 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none w-full max-w-xl flex flex-col items-center gap-2"></div>
 
-    <!-- Header Navigation (Khớp 100% ảnh) -->
+    <!-- Header Navigation -->
     <header class="w-full bg-slate-950 px-3 py-2 flex items-center justify-between z-30 mb-2">
         <!-- Current User Info (Góc trái) -->
         <div class="flex items-center space-x-3">
@@ -181,7 +181,7 @@
         </div>
     </main>
 
-    <!-- Footer Split Grid (3 cột khớp 100% giao diện ảnh) -->
+    <!-- Footer Split Grid (3 cột) -->
     <footer class="w-full grid grid-cols-1 lg:grid-cols-12 gap-3 z-30">
         
         <!-- Cột 1: Hội chiến hữu (7) -->
@@ -216,9 +216,9 @@
             </form>
         </div>
 
-        <!-- Cột 3: Cụm nút bấm điều khiển (Khớp 100% thiết kế ảnh) -->
+        <!-- Cột 3: Cụm nút bấm điều khiển -->
         <div class="lg:col-span-4 grid grid-cols-2 gap-2 h-48 sm:h-52">
-            <!-- Nút CỤM LY 100% Cam Vàng Rực Rỡ (Hàng 1 full span) -->
+            <!-- Nút CỤM LY 100% Cam Vàng Rực Rỡ -->
             <button onclick="actionCheers100()" class="col-span-2 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-2xl p-3 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-98 transition border border-amber-300">
                 <i class="fa-solid fa-beer-mug-empty text-xl"></i>
                 <span class="text-sm tracking-wide uppercase">CỤM LY 100%</span>
@@ -236,7 +236,7 @@
                 <span>Gọi Mồi Ngon</span>
             </button>
 
-            <!-- Nút Bật Karaoke Bàn Nhậu (Hàng cuối full span) -->
+            <!-- Nút Bật Karaoke Bàn Nhậu -->
             <button onclick="openKaraokeModal()" class="col-span-2 bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-pink-400 font-bold rounded-2xl p-2.5 flex items-center justify-center gap-2 text-xs active:scale-98 transition">
                 <i class="fa-solid fa-microphone-lines text-pink-400 text-sm"></i>
                 <span>Bật Karaoke Bàn Nhậu</span>
@@ -296,9 +296,8 @@
         </div>
     </div>
 
-    <!-- Realtime Engine & Logic -->
+    <!-- Realtime Engine & Multi-channel Sync Logic -->
     <script>
-        // 7 Fixed Members list as in image
         const FIXED_MEMBERS = [
             "Thanh Quí", "Quang Hoà", "Lê Hoàng", 
             "Thế Vũ", "Thanh Chính", "Trọng Tình", "Đình Dũng"
@@ -307,16 +306,21 @@
         let currentUser = null;
         let audioEnabled = true;
 
-        // Member State Store
         let memberStates = {};
         FIXED_MEMBERS.forEach(name => {
             memberStates[name] = { drunk: 0, online: false };
         });
 
-        // Setup BroadcastChannel for Instant Tab-to-Tab Sync Fallback
+        // 1. BroadcastChannel Engine (Instant Tab-to-Tab Sync)
         const broadcastChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('quan_nhau_online_sync') : null;
 
-        // Setup Public Firebase Realtime Config
+        // 2. WebSocket Relay Fallback Engine
+        let socketEngine = null;
+        try {
+            socketEngine = new WebSocket('wss://free.chatws.com');
+        } catch(e) {}
+
+        // 3. Firebase Database Engine
         const firebaseConfig = {
             databaseURL: "https://quan-nhau-online-default-rtdb.asia-southeast1.firebasedatabase.app"
         };
@@ -324,11 +328,9 @@
         try {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
-        } catch (e) {
-            console.log("Firebase initialized in offline mode");
-        }
+        } catch (e) {}
 
-        // Web Audio Synthesizer (Clink FX)
+        // Web Audio Synthesizer FX
         const AudioEngine = {
             ctx: null,
             init() {
@@ -369,14 +371,12 @@
             }
         };
 
-        // App Init
         window.addEventListener('DOMContentLoaded', () => {
             initLoginButtons();
             renderMembersUI();
             setupRealtimeListeners();
         });
 
-        // Initialize User Buttons in Login Modal
         function initLoginButtons() {
             const container = document.getElementById('loginUserButtons');
             container.innerHTML = '';
@@ -397,15 +397,18 @@
             document.getElementById('currentUserNameDisplay').innerText = currentUser;
             document.getElementById('userAvatarBox').innerText = currentUser.charAt(0);
 
-            // Notify Table
             dispatchRealtimeEvent('JOIN', { author: currentUser, text: `vừa gia nhập bàn nhậu!` });
             
-            // Sync user presence to Firebase if available
             if (db) {
                 const userRef = db.ref('presence/' + currentUser);
                 userRef.set({ name: currentUser, online: true, drunk: memberStates[currentUser].drunk });
                 userRef.onDisconnect().set({ name: currentUser, online: false, drunk: memberStates[currentUser].drunk });
             }
+
+            setInterval(() => {
+                if (currentUser) dispatchRealtimeEvent('PING', { author: currentUser });
+            }, 4000);
+
             renderMembersUI();
         }
 
@@ -413,7 +416,6 @@
             document.getElementById('loginModal').classList.remove('hidden');
         }
 
-        // Render 7 Member Cards in Left Panel
         function renderMembersUI() {
             const container = document.getElementById('memberListContainer');
             container.innerHTML = '';
@@ -447,12 +449,10 @@
 
             document.getElementById('onlineCountBadge').innerText = `● ${onlineCount} Online`;
             
-            // Average Drunk Level for table
             const avgDrunk = Math.min(100, Math.floor(totalDrunk / FIXED_MEMBERS.length));
             document.getElementById('drunkProgressBar').style.width = avgDrunk + '%';
             document.getElementById('drunkPercentText').innerText = `${avgDrunk}% - ${avgDrunk > 50 ? 'Say Phê Phê' : 'Tỉnh Táo'}`;
 
-            // Drunk Effect Filter for Screen
             if (currentUser && memberStates[currentUser]) {
                 const myDrunk = memberStates[currentUser].drunk;
                 const scene = document.getElementById('mainScene');
@@ -463,33 +463,43 @@
             }
         }
 
-        // Realtime Event Broadcaster & Listener
+        // Multi-channel Realtime Broadcaster
         function dispatchRealtimeEvent(type, payload) {
             const data = { type, payload, timestamp: Date.now() };
 
-            // 1. BroadcastChannel (Same browser tabs sync)
             if (broadcastChannel) broadcastChannel.postMessage(data);
 
-            // 2. Firebase Database Sync (Cross-device sync)
+            if (socketEngine && socketEngine.readyState === WebSocket.OPEN) {
+                socketEngine.send(JSON.stringify(data));
+            }
+
             if (db) {
                 db.ref('pub_events').push(data);
             }
 
-            // Handle locally immediately
             handleRealtimeEvent(data);
         }
 
         function setupRealtimeListeners() {
-            // Listen to BroadcastChannel
             if (broadcastChannel) {
                 broadcastChannel.onmessage = (event) => {
-                    if (event.data && event.data.payload.author !== currentUser) {
+                    if (event.data && event.data.payload && event.data.payload.author !== currentUser) {
                         handleRealtimeEvent(event.data);
                     }
                 };
             }
 
-            // Listen to Firebase Realtime Database
+            if (socketEngine) {
+                socketEngine.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data && data.payload && data.payload.author !== currentUser) {
+                            handleRealtimeEvent(data);
+                        }
+                    } catch(e) {}
+                };
+            }
+
             if (db) {
                 db.ref('pub_events').limitToLast(1).on('child_added', (snapshot) => {
                     const data = snapshot.val();
@@ -498,7 +508,6 @@
                     }
                 });
 
-                // Listen to presence
                 db.ref('presence').on('value', (snapshot) => {
                     const val = snapshot.val() || {};
                     Object.keys(val).forEach(name => {
@@ -512,10 +521,13 @@
             }
         }
 
-        // Handle Realtime Events on UI
         function handleRealtimeEvent(data) {
             const { type, payload } = data;
             const author = payload.author || "Chiến hữu";
+
+            if (memberStates[author]) {
+                memberStates[author].online = true;
+            }
 
             if (type === 'CHEERS') {
                 AudioEngine.playClink();
@@ -523,10 +535,8 @@
                 addChatMessage(author, "vừa CỤM LY ZÔ 100%! 💥🍻");
                 showBannerToast(`💥 ${author} vừa cụm ly ZÔ 100%!`);
                 
-                // Update Drunk State
                 if (memberStates[author]) {
                     memberStates[author].drunk = Math.min(100, memberStates[author].drunk + 15);
-                    memberStates[author].online = true;
                 }
                 renderMembersUI();
             }
@@ -552,9 +562,11 @@
                 addChatMessage("Hệ thống", `${author} ${payload.text}`);
                 renderMembersUI();
             }
+            else if (type === 'PING') {
+                renderMembersUI();
+            }
         }
 
-        // Actions Triggered by User
         function actionCheers100() {
             if (!currentUser) return reopenLoginModal();
             dispatchRealtimeEvent('CHEERS', { author: currentUser });
@@ -588,7 +600,6 @@
             }
         }
 
-        // UI Helpers & Visual FX
         function triggerClinkEffect(author) {
             const glass = document.getElementById('centerBeerGlass');
             const txt = document.getElementById('clinkTextEffect');
