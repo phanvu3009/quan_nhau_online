@@ -6,11 +6,12 @@
     <title>QUÁN NHẬU ONLINE THỨ 6 - REALTIME LIVE</title>
     <style>
         :root {
-            --bg-dark: #0f0c20;
-            --panel-bg: rgba(20, 16, 45, 0.85);
+            --bg-dark: #0a0714;
+            --panel-bg: rgba(18, 14, 38, 0.9);
+            --neon-gold: #ffb700;
+            --neon-orange: #ff7700;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
-            --neon-gold: #ffb700;
             --neon-green: #39ff14;
             --text-light: #f0f0ff;
         }
@@ -29,6 +30,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding: 15px;
             overflow-x: hidden;
             transition: filter 0.5s ease;
         }
@@ -47,8 +49,8 @@
 
         .login-box {
             background: var(--panel-bg);
-            border: 2px solid var(--neon-pink);
-            box-shadow: 0 0 30px var(--neon-pink);
+            border: 2px solid var(--neon-gold);
+            box-shadow: 0 0 30px rgba(255, 183, 0, 0.4);
             border-radius: 15px;
             padding: 25px;
             text-align: center;
@@ -71,7 +73,7 @@
 
         .btn-user {
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--neon-blue);
+            border: 1px solid var(--neon-gold);
             color: #fff;
             padding: 12px;
             border-radius: 8px;
@@ -81,289 +83,396 @@
         }
 
         .btn-user:hover {
-            background: var(--neon-blue);
+            background: var(--neon-gold);
             color: #000;
-            box-shadow: 0 0 15px var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-gold);
         }
 
-        /* Header Neon Sign */
+        /* Top Header */
         header {
-            text-align: center;
-            padding: 15px;
-            background: rgba(10, 8, 25, 0.95);
-            border-bottom: 2px solid var(--neon-pink);
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-            position: relative;
-            z-index: 10;
-        }
-
-        h1.neon-title {
-            font-size: 2.2rem;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 
-                0 0 5px #fff,
-                0 0 10px #fff,
-                0 0 20px var(--neon-pink),
-                0 0 30px var(--neon-pink);
-            animation: blink 2s infinite alternate;
-        }
-
-        .subtitle {
-            color: var(--neon-blue);
-            font-size: 0.95rem;
-            margin-top: 5px;
-            letter-spacing: 1px;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.85; }
-        }
-
-        /* Container Layout */
-        .container {
             display: grid;
-            grid-template-columns: 280px 1fr 320px;
-            gap: 15px;
-            padding: 15px;
-            flex: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        @media (max-width: 1024px) {
-            .container { grid-template-columns: 1fr; }
-        }
-
-        .panel {
-            background: var(--panel-bg);
+            grid-template-columns: 220px 1fr 140px;
+            align-items: center;
+            background: rgba(15, 12, 30, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            display: flex;
-            flex-direction: column;
+            padding: 10px 20px;
+            margin-bottom: 15px;
         }
 
-        .panel-title {
-            font-size: 1.1rem;
-            color: var(--neon-gold);
-            border-bottom: 1px solid rgba(255, 183, 0, 0.3);
-            padding-bottom: 8px;
-            margin-bottom: 12px;
+        .user-profile-tag {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-        }
-
-        /* Member List */
-        .member-list {
-            display: flex;
-            flex-direction: column;
             gap: 10px;
-            overflow-y: auto;
-            max-height: 500px;
         }
 
-        .member-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-left: 3px solid var(--neon-blue);
-            transition: all 0.3s ease;
-        }
-
-        .avatar {
+        .avatar-top {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+            background: #ff4500;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.9rem;
+        }
+
+        .btn-change-name {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
             color: #fff;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 4px;
-        }
-        .online-dot { background: var(--neon-green); box-shadow: 0 0 6px var(--neon-green); }
-        .offline-dot { background: #666; }
-
-        /* Main Pub Stage */
-        .pub-stage {
-            position: relative;
-            background: radial-gradient(circle, rgba(40,30,80,0.6) 0%, rgba(15,12,32,0.9) 100%), url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80') center/cover;
-            border-radius: 15px;
-            border: 2px solid var(--neon-blue);
-            box-shadow: inset 0 0 30px rgba(0, 243, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            min-height: 480px;
-            overflow: hidden;
-        }
-
-        .toast-banner {
-            background: rgba(0, 0, 0, 0.75);
-            border: 1px solid var(--neon-gold);
-            border-radius: 20px;
-            padding: 8px 20px;
-            color: #fff;
-            font-size: 0.95rem;
-            max-width: 80%;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
-            animation: pulse 1.5s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.03); }
-        }
-
-        /* Wooden Table & Beer Glass */
-        .table-area {
-            position: relative;
-            width: 320px;
-            height: 200px;
-            background: #4a2c11;
-            border-radius: 100px / 60px;
-            border: 8px solid #2d1a0a;
-            box-shadow: 0 15px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px 0;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
             cursor: pointer;
         }
 
-        .beer-glass {
-            font-size: 4rem;
-            transition: transform 0.15s ease;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+        .header-title-box {
+            text-align: center;
         }
 
-        .cheers-effect {
+        .neon-app-title {
+            color: var(--neon-gold);
+            font-size: 1.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 183, 0, 0.6);
+        }
+
+        .header-slogan {
+            color: #aaa;
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        .btn-sound {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            justify-self: end;
+        }
+
+        /* Main Pub Stage */
+        .pub-stage {
+            background: rgba(15, 12, 30, 0.85);
+            border: 1px solid rgba(255, 183, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .stage-header-tag {
+            color: var(--neon-gold);
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* GIAO DIỆN BÀN GỖ & LY BIA & MÓN ĂN */
+        .wood-table-container {
+            width: 100%;
+            max-width: 750px;
+            height: 250px;
+            background: radial-gradient(ellipse at center, #5c3517 0%, #2e1808 100%);
+            border-radius: 120px / 60px;
+            border: 10px solid #201004;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.9);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        /* Ly bia trung tâm */
+        .beer-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .beer-glass-img {
+            font-size: 4.8rem;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.7));
+        }
+
+        .cheers-badge {
+            background: var(--neon-orange);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-top: -5px;
+            box-shadow: 0 0 10px var(--neon-orange);
+        }
+
+        /* Danh sách mồi ngon trên bàn */
+        .food-dishes-grid {
             position: absolute;
-            font-size: 2rem;
+            width: 80%;
+            height: 80%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .dish-item {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 6px 6px rgba(0,0,0,0.8));
+            animation: popIn 0.3s ease-out;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            padding: 8px;
+            border: 1px dashed rgba(255, 183, 0, 0.3);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-20deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .table-hint-text {
+            color: #888;
+            font-size: 0.8rem;
+            font-style: italic;
+            position: absolute;
+            bottom: 12px;
+        }
+
+        /* Progress Bar Tửu Lượng */
+        .drunk-bar-box {
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .drunk-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #ccc;
+            white-space: nowrap;
+        }
+
+        .drunk-progress-bg {
+            flex: 1;
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .drunk-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-gold), var(--neon-orange));
+            border-radius: 6px;
+            transition: width 0.4s ease;
+        }
+
+        .drunk-status-text {
+            font-size: 0.85rem;
             font-weight: bold;
             color: var(--neon-gold);
-            text-shadow: 0 0 10px #ff0000;
-            pointer-events: none;
-            opacity: 0;
-            transition: all 0.5s ease-out;
+            white-space: nowrap;
         }
 
-        .food-items {
-            position: absolute;
-            bottom: 25px;
-            display: flex;
-            gap: 15px;
-            font-size: 1.8rem;
-        }
-
-        /* Action Buttons */
-        .action-bar {
+        /* Footer Grid: 3 Cột */
+        .bottom-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 10px;
-            width: 100%;
+            grid-template-columns: 240px 1fr 300px;
+            gap: 15px;
+            flex: 1;
         }
 
-        .btn {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+        @media (max-width: 900px) {
+            .bottom-grid { grid-template-columns: 1fr; }
+        }
+
+        .panel-box {
+            background: rgba(15, 12, 30, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--neon-gold);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Cột 1: Danh sách hội bạn */
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            max-height: 220px;
+        }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 6px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .member-card .name { font-size: 0.85rem; font-weight: bold; }
+        .member-card .sub { font-size: 0.7rem; color: #888; }
+        .member-card .drunk { font-size: 0.8rem; color: var(--neon-gold); font-weight: bold; }
+
+        /* Cột 2: Khung Chat */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 170px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .chat-msg {
+            font-size: 0.8rem;
+            line-height: 1.3;
+            background: rgba(255,255,255,0.03);
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+
+        .chat-msg .author { color: var(--neon-blue); font-weight: bold; }
+
+        .chat-input-bar {
+            display: flex;
+            gap: 5px;
+        }
+
+        .chat-input-bar input {
+            flex: 1;
+            background: rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: #fff;
+            font-size: 0.8rem;
+            outline: none;
+        }
+
+        .chat-input-bar button {
+            background: var(--neon-orange);
+            border: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Cột 3: Nút Thao Tác Cụm Ly / Gọi Mồi */
+        .action-controls-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            height: 100%;
+        }
+
+        .btn-main-cheers {
+            background: linear-gradient(135deg, #ff9000, #ff4500);
+            border: none;
+            color: #fff;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+            text-transform: uppercase;
+        }
+
+        .btn-main-cheers:hover {
+            transform: translateY(-2deg);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.6);
+        }
+
+        .sub-btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .btn-sub-action {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: #fff;
             padding: 10px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            font-weight: bold;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 5px;
-            transition: all 0.2s ease;
+            justify-content: center;
+            gap: 6px;
         }
 
-        .btn:hover {
-            background: var(--neon-pink);
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
-            transform: translateY(-2deg);
+        .btn-sub-action:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Chat Panel */
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            max-height: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-right: 5px;
-        }
-
-        .msg {
-            background: rgba(255, 255, 255, 0.05);
+        .btn-karaoke {
+            background: rgba(180, 0, 255, 0.2);
+            border: 1px solid rgba(180, 0, 255, 0.4);
+            color: #e099ff;
+            padding: 8px;
             border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        .msg .author {
-            color: var(--neon-blue);
-            font-weight: bold;
-            margin-bottom: 2px;
-        }
-
-        .chat-input-group {
-            display: flex;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .chat-input {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            padding: 8px 10px;
-            color: #fff;
-            outline: none;
-        }
-
-        .btn-send {
-            background: var(--neon-blue);
-            color: #000;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-weight: bold;
             cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn-karaoke:hover {
+            background: rgba(180, 0, 255, 0.4);
         }
     </style>
 </head>
 <body>
 
-    <!-- Modal chọn danh tính -->
+    <!-- Modal Chọn Danh Tính -->
     <div class="login-overlay" id="login-overlay">
         <div class="login-box">
             <h2>CHỌN TÊN ĐỂ VÀO BÀN NHẬU</h2>
@@ -372,76 +481,112 @@
         </div>
     </div>
 
+    <!-- Header Trực Quan -->
     <header>
-        <h1 class="neon-title">🍻 QUÁN NHẬU ONLINE THỨ 6 🍻</h1>
-        <div class="subtitle" id="current-user-display">Trạng thái: Vui lòng chọn danh tính</div>
+        <div class="user-profile-tag">
+            <div class="avatar-top" id="user-avatar">?</div>
+            <div>
+                <div style="font-size: 0.85rem; font-weight: bold;" id="user-name-display">Đang tải...</div>
+                <button class="btn-change-name" onclick="location.reload()">Đổi tên</button>
+            </div>
+        </div>
+
+        <div class="header-title-box">
+            <div class="neon-app-title">🍺 QUÁN NHẬU ONLINE THỨ 6 🍺</div>
+            <div class="header-slogan">"Zô 100% - Không Say Không Về - Đã Nhậu Là Không Lái Xe"</div>
+        </div>
+
+        <button class="btn-sound" onclick="playClinkSound()">🔊 Âm thanh</button>
     </header>
 
-    <div class="container">
-        <!-- Bàn nhậu chiến hữu -->
-        <div class="panel">
-            <div class="panel-title">
-                <span>Bàn Nhậu Chiến Hữu</span>
-                <span style="font-size: 0.8rem; color: var(--neon-green);" id="online-count">0 Online</span>
+    <!-- Khu Vực Bàn Nhậu - Ly Bia - Mồi Ngon -->
+    <div class="pub-stage">
+        <div class="stage-header-tag">🍺 BÀN NHẬU TRỰC TUYẾN HỘI ANH EM (7 CHIẾN HỮU)</div>
+
+        <div class="wood-table-container" onclick="sendAction('cheers')">
+            <!-- Mồi ngon xuất hiện ở đây -->
+            <div class="food-dishes-grid" id="food-dishes-grid"></div>
+
+            <!-- Ly bia trung tâm -->
+            <div class="beer-container">
+                <div class="beer-glass-img" id="beer-glass">🍺</div>
+                <div class="cheers-badge">Bấm để Cụm Ly Zô!</div>
+            </div>
+
+            <div class="table-hint-text" id="table-hint">(Bàn chưa có mồi, bấm "Gọi Mồi Ngon" bên dưới!)</div>
+        </div>
+
+        <!-- Thanh tửu lượng -->
+        <div class="drunk-bar-box">
+            <div class="drunk-label">🍺 Tửu Lượng Bàn Nhậu:</div>
+            <div class="drunk-progress-bg">
+                <div class="drunk-progress-fill" id="drunk-fill"></div>
+            </div>
+            <div class="drunk-status-text" id="drunk-status">0% - Tỉnh Táo</div>
+        </div>
+    </div>
+
+    <!-- 3 Cột Chân Trang -->
+    <div class="bottom-grid">
+        <!-- Cột 1: Danh sách hội anh em -->
+        <div class="panel-box">
+            <div class="panel-header">
+                <span>👨‍👦‍👦 Hội Chiến Hữu (7)</span>
+                <span style="color: var(--neon-green);" id="online-count">• 1 Online</span>
             </div>
             <div class="member-list" id="member-list"></div>
         </div>
 
-        <!-- Sân nhậu trung tâm -->
-        <div class="pub-stage">
-            <div class="toast-banner" id="toast-banner">
-                📢 Chọn tên để tham gia bàn nhậu Zô 100% cùng anh em!
+        <!-- Cột 2: Trò chuyện Realtime -->
+        <div class="panel-box">
+            <div class="panel-header">
+                <span>💬 Trò Chuyện Realtime</span>
+                <span style="font-size: 0.75rem; color: #888;">Trực tiếp</span>
             </div>
-
-            <div class="table-area" onclick="sendAction('cheers')">
-                <div class="beer-glass" id="beer-glass">🍺</div>
-                <div class="cheers-effect" id="cheers-effect">ZÔ 100%! 💥</div>
-                <div class="food-items" id="food-items"></div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-msg"><span class="author">Chủ quán:</span> "Chào mừng các chiến hữu! Chọn tên để Zô 100% cùng bàn nhậu nào!"</div>
             </div>
-
-            <div class="action-bar">
-                <button class="btn" onclick="sendAction('cheers')">
-                    <span>🍻</span> Cụm Ly 100%
-                </button>
-                <button class="btn" onclick="sendAction('pour')">
-                    <span>🍺</span> Rót Đầy Ly
-                </button>
-                <button class="btn" onclick="sendAction('food')">
-                    <span>🍖</span> Gọi Mồi Ngon
-                </button>
-                <button class="btn" onclick="sendAction('karaoke')">
-                    <span>🎤</span> Hát Karaoke
-                </button>
+            <div class="chat-input-bar">
+                <input type="text" id="chat-input" placeholder="Nhắn tin trò chuyện với bàn nhậu..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">➤</button>
             </div>
         </div>
 
-        <!-- Chat Realtime -->
-        <div class="panel">
-            <div class="panel-title">Trò Chuyện Realtime</div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="msg"><span class="author">Hệ thống:</span> Chào mừng anh em đến với QUÁN NHẬU ONLINE THỨ 6!</div>
-            </div>
-            <div class="chat-input-group">
-                <input type="text" class="chat-input" id="chat-input" placeholder="Nhập tin nhắn / Lời chúc..." onkeypress="handleKeyPress(event)">
-                <button class="btn-send" onclick="sendMessage()">Gửi</button>
+        <!-- Cột 3: Nút điều khiển -->
+        <div class="panel-box">
+            <div class="action-controls-grid">
+                <button class="btn-main-cheers" onclick="sendAction('cheers')">
+                    <span>🍺</span> CỤM LY 100%
+                </button>
+                <div class="sub-btn-row">
+                    <button class="btn-sub-action" onclick="sendAction('pour')">
+                        <span>🍶</span> Rót Đầy Bia
+                    </button>
+                    <button class="btn-sub-action" onclick="sendAction('food')">
+                        <span>🍗</span> Gọi Mồi Ngon
+                    </button>
+                </div>
+                <button class="btn-karaoke" onclick="sendAction('karaoke')">
+                    🎤 Bật Karaoke Bàn Nhậu
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        const membersList = ["Thanh Quí", "Quang Hoà", "Lê Hoàng", "Thế Vũ", "Thanh Chính", "Trọng Tình", "Đình Dũng"];
+        const membersList = ["Thanh Quí", "Quang Hoà", "Lê Hoà", "Thế Vũ", "Thanh Chính", "Trọng Tình", "Đình Dũng"];
         const memberStats = {};
         membersList.forEach(m => memberStats[m] = { online: false, drunk: 0 });
 
         let currentUser = null;
         let totalDrunkLevel = 0;
-        const foods = ["🍗", "🥩", "🦪", "🦐", "🦑", "🥜", "🍢"];
+        const foodList = ["🍗 Cánh Gà", "🥩 Bò Nướng", "🦪 Hàu Nướng", "🦐 Tôm Hấp", "🦑 Mực Nướng", "🥜 Đậu Phộng", "🍢 Xiên Que"];
 
-        // BroadcastChannel & WebSocket đồng bộ 2 chiều
+        // BroadcastChannel & WebSocket đồng bộ
         const bc = new BroadcastChannel('quan_nhau_channel');
         const ws = new WebSocket('wss://free.chatws.com');
 
-        // Tạo nút danh tính
+        // Tạo nút chọn tên
         const grid = document.getElementById('user-select-grid');
         membersList.forEach(name => {
             const btn = document.createElement('button');
@@ -451,7 +596,7 @@
             grid.appendChild(btn);
         });
 
-        // Web Audio API âm thanh cụm ly
+        // Âm thanh cụm ly
         function playClinkSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -472,7 +617,8 @@
         function selectUser(name) {
             currentUser = name;
             document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('current-user-display').innerText = `Tài khoản: ${currentUser} (Đang Online)`;
+            document.getElementById('user-name-display').innerText = currentUser;
+            document.getElementById('user-avatar').innerText = currentUser.charAt(0);
             
             memberStats[currentUser].online = true;
             renderMembers();
@@ -501,7 +647,7 @@
 
                 switch (data.type) {
                     case 'JOIN':
-                        addChatMessage("Hệ thống", `${data.user} vừa vào bàn nhậu! 🍻`);
+                        addChatMessage("Hệ thống", `${data.user} vừa gia nhập bàn nhậu! 🍻`);
                         renderMembers();
                         break;
                     case 'PING':
@@ -509,7 +655,6 @@
                         break;
                     case 'CHAT':
                         addChatMessage(data.user, data.text);
-                        document.getElementById('toast-banner').innerText = `📢 ${data.user}: "${data.text}"`;
                         break;
                     case 'ACTION':
                         executeAction(data.user, data.action);
@@ -528,67 +673,52 @@
                 const isOnline = memberStats[name].online;
                 if (isOnline) onlineCnt++;
                 return `
-                    <div class="member-card" style="opacity: ${isOnline ? 1 : 0.45}">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div class="avatar">${name.charAt(0)}</div>
-                            <div>
-                                <div style="font-weight:bold">${name}</div>
-                                <div style="font-size:0.75rem;">
-                                    <span class="status-dot ${isOnline ? 'online-dot' : 'offline-dot'}"></span>
-                                    ${isOnline ? 'Đang nhậu' : 'Vắng mặt'}
-                                </div>
-                            </div>
+                    <div class="member-card" style="opacity: ${isOnline ? 1 : 0.4}">
+                        <div>
+                            <div class="name">${name}</div>
+                            <div class="sub">${isOnline ? '🟢 Đang nhậu' : '⚪ Vắng mặt'}</div>
                         </div>
-                        <div style="font-size:0.8rem; color:var(--neon-gold); font-weight:bold;">
-                            🍺 ${memberStats[name].drunk}%
-                        </div>
+                        <div class="drunk">🍺 ${memberStats[name].drunk}%</div>
                     </div>
                 `;
             }).join('');
-            document.getElementById('online-count').innerText = `${onlineCnt} Online`;
+            document.getElementById('online-count').innerText = `• ${onlineCnt} Online`;
         }
 
         function executeAction(user, action) {
             const glass = document.getElementById('beer-glass');
+
             if (memberStats[user]) {
                 memberStats[user].drunk = Math.min(100, memberStats[user].drunk + 10);
             }
-            totalDrunkLevel = Math.min(100, totalDrunkLevel + 2);
+            totalDrunkLevel = Math.min(100, totalDrunkLevel + 4);
+            updateDrunkBar();
             renderMembers();
-            applyDrunkEffect();
 
             if (action === 'cheers') {
                 playClinkSound();
-                const effect = document.getElementById('cheers-effect');
-                effect.style.opacity = '1';
-                effect.style.transform = 'translateY(-20px) scale(1.2)';
-                setTimeout(() => {
-                    effect.style.opacity = '0';
-                    effect.style.transform = 'translateY(0) scale(1)';
-                }, 600);
-
-                glass.style.transform = 'scale(1.3) rotate(-15deg)';
-                setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 200);
-
-                document.getElementById('toast-banner').innerText = `💥 ${user} vừa CỤM LY ZÔ 100%! 🍻`;
+                glass.style.transform = 'scale(1.4) rotate(-20deg)';
+                setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 250);
                 addChatMessage(user, "vừa CỤM LY ZÔ 100%! 💥🍻");
             } else if (action === 'pour') {
-                glass.style.transform = 'scale(1.2) rotate(15deg)';
-                setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 300);
-                document.getElementById('toast-banner').innerText = `🍺 ${user} vừa rót đầy ly bia!`;
+                glass.style.transform = 'scale(1.2) rotate(20deg)';
+                setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 250);
                 addChatMessage(user, "vừa rót đầy ly bia mát lạnh! 🍺");
             } else if (action === 'food') {
-                const foodContainer = document.getElementById('food-items');
-                const randFood = foods[Math.floor(Math.random() * foods.length)];
-                if (foodContainer.children.length > 5) foodContainer.innerHTML = '';
-                const item = document.createElement('span');
-                item.innerText = randFood;
-                foodContainer.appendChild(item);
-                document.getElementById('toast-banner').innerText = `🍖 ${user} gọi món ngon ${randFood}!`;
-                addChatMessage(user, `vừa gọi món ngon ${randFood}!`);
+                const foodGrid = document.getElementById('food-dishes-grid');
+                const randDish = foodList[Math.floor(Math.random() * foodList.length)];
+                
+                if (foodGrid.children.length >= 6) foodGrid.innerHTML = '';
+                
+                const dishEl = document.createElement('div');
+                dishEl.className = 'dish-item';
+                dishEl.innerText = randDish.split(' ')[0];
+                foodGrid.appendChild(dishEl);
+
+                document.getElementById('table-hint').innerText = `(Món vừa lên: ${randDish})`;
+                addChatMessage(user, `vừa gọi món ngon: ${randDish}! 🍖`);
             } else if (action === 'karaoke') {
-                document.getElementById('toast-banner').innerText = `🎤 ${user} bật Karaoke hát sương sương!`;
-                addChatMessage(user, "bật Karaoke hát sương sương! 🎤");
+                addChatMessage(user, "bật Karaoke bàn nhậu hát sương sương! 🎤");
             }
         }
 
@@ -604,7 +734,6 @@
             const text = input.value.trim();
             if (text) {
                 addChatMessage(currentUser, text);
-                document.getElementById('toast-banner').innerText = `💬 ${currentUser}: "${text}"`;
                 broadcast({ type: 'CHAT', user: currentUser, text: text });
                 input.value = '';
             }
@@ -613,17 +742,20 @@
         function addChatMessage(author, text) {
             const chatBox = document.getElementById('chat-messages');
             const msgEl = document.createElement('div');
-            msgEl.className = 'msg';
+            msgEl.className = 'chat-msg';
             msgEl.innerHTML = `<span class="author">${author}:</span> ${text}`;
             chatBox.appendChild(msgEl);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        function applyDrunkEffect() {
-            if (totalDrunkLevel > 40) {
-                const blurVal = (totalDrunkLevel - 40) / 30;
-                document.body.style.filter = `blur(${blurVal}px)`;
-            }
+        function updateDrunkBar() {
+            const fill = document.getElementById('drunk-fill');
+            const status = document.getElementById('drunk-status');
+            fill.style.width = totalDrunkLevel + '%';
+
+            if (totalDrunkLevel < 30) status.innerText = `${totalDrunkLevel}% - Tỉnh Táo`;
+            else if (totalDrunkLevel < 70) status.innerText = `${totalDrunkLevel}% - Sương Sương 🥴`;
+            else status.innerText = `${totalDrunkLevel}% - Tới Bến 🚀`;
         }
 
         function handleKeyPress(e) {
