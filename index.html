@@ -30,23 +30,25 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            transition: filter 0.5s ease;
         }
 
         /* Modal Chọn Tên */
         .login-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.92);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            backdrop-filter: blur(8px);
         }
 
         .login-box {
             background: var(--panel-bg);
             border: 2px solid var(--neon-pink);
-            box-shadow: 0 0 25px var(--neon-pink);
+            box-shadow: 0 0 30px var(--neon-pink);
             border-radius: 15px;
             padding: 25px;
             text-align: center;
@@ -57,6 +59,7 @@
         .login-box h2 {
             color: var(--neon-gold);
             margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--neon-gold);
         }
 
         .user-select-grid {
@@ -83,13 +86,15 @@
             box-shadow: 0 0 15px var(--neon-blue);
         }
 
-        /* Header */
+        /* Header Neon Sign */
         header {
             text-align: center;
             padding: 15px;
             background: rgba(10, 8, 25, 0.95);
             border-bottom: 2px solid var(--neon-pink);
             box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+            position: relative;
+            z-index: 10;
         }
 
         h1.neon-title {
@@ -97,13 +102,24 @@
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow: 0 0 5px #fff, 0 0 20px var(--neon-pink);
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-pink),
+                0 0 30px var(--neon-pink);
+            animation: blink 2s infinite alternate;
         }
 
         .subtitle {
             color: var(--neon-blue);
             font-size: 0.95rem;
             margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
         }
 
         /* Container Layout */
@@ -127,6 +143,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             display: flex;
             flex-direction: column;
         }
@@ -138,6 +156,7 @@
             padding-bottom: 8px;
             margin-bottom: 12px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
         }
 
@@ -158,6 +177,7 @@
             align-items: center;
             justify-content: space-between;
             border-left: 3px solid var(--neon-blue);
+            transition: all 0.3s ease;
         }
 
         .avatar {
@@ -169,20 +189,34 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 0.9rem;
+            color: #fff;
         }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 4px;
+        }
+        .online-dot { background: var(--neon-green); box-shadow: 0 0 6px var(--neon-green); }
+        .offline-dot { background: #666; }
 
         /* Main Pub Stage */
         .pub-stage {
             position: relative;
-            background: radial-gradient(circle, rgba(40,30,80,0.6) 0%, rgba(15,12,32,0.9) 100%);
+            background: radial-gradient(circle, rgba(40,30,80,0.6) 0%, rgba(15,12,32,0.9) 100%), url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80') center/cover;
             border-radius: 15px;
             border: 2px solid var(--neon-blue);
+            box-shadow: inset 0 0 30px rgba(0, 243, 255, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
             min-height: 480px;
+            overflow: hidden;
         }
 
         .toast-banner {
@@ -190,11 +224,20 @@
             border: 1px solid var(--neon-gold);
             border-radius: 20px;
             padding: 8px 20px;
+            color: #fff;
             font-size: 0.95rem;
+            max-width: 80%;
             text-align: center;
             box-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
+            animation: pulse 1.5s infinite alternate;
         }
 
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
+        }
+
+        /* Wooden Table & Beer Glass */
         .table-area {
             position: relative;
             width: 320px;
@@ -202,26 +245,40 @@
             background: #4a2c11;
             border-radius: 100px / 60px;
             border: 8px solid #2d1a0a;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 20px 0;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
         }
 
         .beer-glass {
             font-size: 4rem;
             transition: transform 0.15s ease;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+        }
+
+        .cheers-effect {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--neon-gold);
+            text-shadow: 0 0 10px #ff0000;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.5s ease-out;
         }
 
         .food-items {
             position: absolute;
-            bottom: 20px;
+            bottom: 25px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
             font-size: 1.8rem;
         }
 
+        /* Action Buttons */
         .action-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -230,18 +287,26 @@
         }
 
         .btn {
-            background: rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
             border: 1px solid rgba(255,255,255,0.2);
             color: #fff;
             padding: 10px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
         }
 
         .btn:hover {
             background: var(--neon-pink);
-            box-shadow: 0 0 10px var(--neon-pink);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+            transform: translateY(-2deg);
         }
 
         /* Chat Panel */
@@ -252,6 +317,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            padding-right: 5px;
         }
 
         .msg {
@@ -259,11 +325,13 @@
             border-radius: 8px;
             padding: 8px 12px;
             font-size: 0.85rem;
+            line-height: 1.4;
         }
 
         .msg .author {
             color: var(--neon-blue);
             font-weight: bold;
+            margin-bottom: 2px;
         }
 
         .chat-input-group {
@@ -279,6 +347,7 @@
             border-radius: 6px;
             padding: 8px 10px;
             color: #fff;
+            outline: none;
         }
 
         .btn-send {
@@ -290,21 +359,11 @@
             font-weight: bold;
             cursor: pointer;
         }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-        }
-        .online-dot { background: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
-        .offline-dot { background: #666; }
     </style>
 </head>
 <body>
 
-    <!-- Modal chọn tên -->
+    <!-- Modal chọn danh tính -->
     <div class="login-overlay" id="login-overlay">
         <div class="login-box">
             <h2>CHỌN TÊN ĐỂ VÀO BÀN NHẬU</h2>
@@ -315,7 +374,7 @@
 
     <header>
         <h1 class="neon-title">🍻 QUÁN NHẬU ONLINE THỨ 6 🍻</h1>
-        <div class="subtitle" id="current-user-display">Trạng thái: Đang kết nối server...</div>
+        <div class="subtitle" id="current-user-display">Trạng thái: Vui lòng chọn danh tính</div>
     </header>
 
     <div class="container">
@@ -328,22 +387,31 @@
             <div class="member-list" id="member-list"></div>
         </div>
 
-        <!-- Sân nhậu chính -->
+        <!-- Sân nhậu trung tâm -->
         <div class="pub-stage">
             <div class="toast-banner" id="toast-banner">
-                📢 Hãy chọn tên để nâng ly Zô 100% cùng anh em!
+                📢 Chọn tên để tham gia bàn nhậu Zô 100% cùng anh em!
             </div>
 
             <div class="table-area" onclick="sendAction('cheers')">
                 <div class="beer-glass" id="beer-glass">🍺</div>
+                <div class="cheers-effect" id="cheers-effect">ZÔ 100%! 💥</div>
                 <div class="food-items" id="food-items"></div>
             </div>
 
             <div class="action-bar">
-                <button class="btn" onclick="sendAction('cheers')">🍻 Cụm Ly 100%</button>
-                <button class="btn" onclick="sendAction('pour')">🍺 Rót Đầy Ly</button>
-                <button class="btn" onclick="sendAction('food')">🍖 Gọi Mồi Ngon</button>
-                <button class="btn" onclick="sendAction('karaoke')">🎤 Hát Karaoke</button>
+                <button class="btn" onclick="sendAction('cheers')">
+                    <span>🍻</span> Cụm Ly 100%
+                </button>
+                <button class="btn" onclick="sendAction('pour')">
+                    <span>🍺</span> Rót Đầy Ly
+                </button>
+                <button class="btn" onclick="sendAction('food')">
+                    <span>🍖</span> Gọi Mồi Ngon
+                </button>
+                <button class="btn" onclick="sendAction('karaoke')">
+                    <span>🎤</span> Hát Karaoke
+                </button>
             </div>
         </div>
 
@@ -351,7 +419,7 @@
         <div class="panel">
             <div class="panel-title">Trò Chuyện Realtime</div>
             <div class="chat-messages" id="chat-messages">
-                <div class="msg"><span class="author">Hệ thống:</span> Đã kết nối kênh nhậu Realtime thành công!</div>
+                <div class="msg"><span class="author">Hệ thống:</span> Chào mừng anh em đến với QUÁN NHẬU ONLINE THỨ 6!</div>
             </div>
             <div class="chat-input-group">
                 <input type="text" class="chat-input" id="chat-input" placeholder="Nhập tin nhắn / Lời chúc..." onkeypress="handleKeyPress(event)">
@@ -366,15 +434,14 @@
         membersList.forEach(m => memberStats[m] = { online: false, drunk: 0 });
 
         let currentUser = null;
+        let totalDrunkLevel = 0;
         const foods = ["🍗", "🥩", "🦪", "🦐", "🦑", "🥜", "🍢"];
 
-        // Kết nối WebSocket Relay công khai (Tự đồng bộ không cần cài đặt backend)
+        // BroadcastChannel & WebSocket đồng bộ 2 chiều
+        const bc = new BroadcastChannel('quan_nhau_channel');
         const ws = new WebSocket('wss://free.chatws.com');
 
-        // BroadcastChannel để đồng bộ tức thì trên cùng thiết bị / khác tab
-        const bc = new BroadcastChannel('quan_nhau_channel');
-
-        // Khởi tạo nút chọn danh tính
+        // Tạo nút danh tính
         const grid = document.getElementById('user-select-grid');
         membersList.forEach(name => {
             const btn = document.createElement('button');
@@ -384,6 +451,24 @@
             grid.appendChild(btn);
         });
 
+        // Web Audio API âm thanh cụm ly
+        function playClinkSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
         function selectUser(name) {
             currentUser = name;
             document.getElementById('login-overlay').style.display = 'none';
@@ -392,25 +477,19 @@
             memberStats[currentUser].online = true;
             renderMembers();
 
-            // Phát tín hiệu tham gia
             broadcast({ type: 'JOIN', user: currentUser });
 
-            // Gửi nhịp tim ping giữ kết nối mỗi 5 giây
             setInterval(() => {
                 if (currentUser) broadcast({ type: 'PING', user: currentUser });
-            }, 5000);
+            }, 4000);
         }
 
-        // Phát dữ liệu đồng bộ
         function broadcast(data) {
             const payload = JSON.stringify(data);
             bc.postMessage(payload);
-            if (ws.readyState === WebSocket.OPEN) {
-                ws.send(payload);
-            }
+            if (ws.readyState === WebSocket.OPEN) ws.send(payload);
         }
 
-        // Xử lý dữ liệu nhận được từ tab khác hoặc người khác
         function handleIncomingData(raw) {
             try {
                 const data = typeof raw === 'string' ? JSON.parse(raw) : raw;
@@ -439,7 +518,6 @@
             } catch (e) {}
         }
 
-        // Đăng ký nhận sự kiện
         bc.onmessage = (e) => handleIncomingData(e.data);
         ws.onmessage = (e) => handleIncomingData(e.data);
 
@@ -473,16 +551,30 @@
         function executeAction(user, action) {
             const glass = document.getElementById('beer-glass');
             if (memberStats[user]) {
-                memberStats[user].drunk = Math.min(100, memberStats[user].drunk + 5);
+                memberStats[user].drunk = Math.min(100, memberStats[user].drunk + 10);
             }
+            totalDrunkLevel = Math.min(100, totalDrunkLevel + 2);
             renderMembers();
+            applyDrunkEffect();
 
             if (action === 'cheers') {
+                playClinkSound();
+                const effect = document.getElementById('cheers-effect');
+                effect.style.opacity = '1';
+                effect.style.transform = 'translateY(-20px) scale(1.2)';
+                setTimeout(() => {
+                    effect.style.opacity = '0';
+                    effect.style.transform = 'translateY(0) scale(1)';
+                }, 600);
+
                 glass.style.transform = 'scale(1.3) rotate(-15deg)';
                 setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 200);
+
                 document.getElementById('toast-banner').innerText = `💥 ${user} vừa CỤM LY ZÔ 100%! 🍻`;
                 addChatMessage(user, "vừa CỤM LY ZÔ 100%! 💥🍻");
             } else if (action === 'pour') {
+                glass.style.transform = 'scale(1.2) rotate(15deg)';
+                setTimeout(() => glass.style.transform = 'scale(1) rotate(0deg)', 300);
                 document.getElementById('toast-banner').innerText = `🍺 ${user} vừa rót đầy ly bia!`;
                 addChatMessage(user, "vừa rót đầy ly bia mát lạnh! 🍺");
             } else if (action === 'food') {
@@ -501,13 +593,13 @@
         }
 
         function sendAction(action) {
-            if (!currentUser) return alert("Vui lòng chọn tên để vào bàn nhậu!");
+            if (!currentUser) return alert("Vui lòng chọn tên trước!");
             executeAction(currentUser, action);
             broadcast({ type: 'ACTION', user: currentUser, action: action });
         }
 
         function sendMessage() {
-            if (!currentUser) return alert("Vui lòng chọn tên để vào bàn nhậu!");
+            if (!currentUser) return alert("Vui lòng chọn tên trước!");
             const input = document.getElementById('chat-input');
             const text = input.value.trim();
             if (text) {
@@ -525,6 +617,13 @@
             msgEl.innerHTML = `<span class="author">${author}:</span> ${text}`;
             chatBox.appendChild(msgEl);
             chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function applyDrunkEffect() {
+            if (totalDrunkLevel > 40) {
+                const blurVal = (totalDrunkLevel - 40) / 30;
+                document.body.style.filter = `blur(${blurVal}px)`;
+            }
         }
 
         function handleKeyPress(e) {
