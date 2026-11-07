@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUÁN NHẬU ONLINE THỨ 6 - REALTIME</title>
+    <title>QUÁN NHẬU ONLINE THỨ 6 - 3D ISOMETRIC & REALTIME</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -13,62 +13,75 @@
     <!-- Firebase App & Database (V9 Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    
     <style>
         body {
             font-family: 'Lexend', sans-serif;
-            background-color: #060913;
+            background-color: #0b0713;
             color: #f1f5f9;
-            overflow-x: hidden;
+            overflow: hidden;
             user-select: none;
         }
 
         /* Custom Scrollbars */
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
-        ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #d97706; border-radius: 4px; }
 
-        /* Gold & Neon Effects */
-        .neon-title {
-            color: #fbbf24;
-            text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(217, 119, 6, 0.4);
+        /* Top Announcement Marquee Bar */
+        .marquee-container {
+            background: linear-gradient(90deg, #991b1b, #7c2d12, #991b1b);
+            border-bottom: 1px solid #f59e0b;
         }
-        
-        .stage-border {
-            border: 2px solid #b45309;
-            box-shadow: 0 0 25px rgba(180, 83, 9, 0.25), inset 0 0 20px rgba(180, 83, 9, 0.15);
+        .marquee-text {
+            animation: marquee 25s linear infinite;
         }
-
-        .inner-table-border {
-            border: 2px solid #92400e;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
 
-        /* Glass Clink Animations */
-        @keyframes toastClinkLeft {
-            0% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.3) rotate(-15deg) translateY(-10px); }
-            100% { transform: scale(1) rotate(0deg); }
+        /* Glassmorphism Panels like Chua Online UI */
+        .chua-panel {
+            background: rgba(28, 19, 14, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 119, 6, 0.35);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
         }
-        .clink-animate {
-            animation: toastClinkLeft 0.5s ease-in-out;
+        .chua-panel-header {
+            background: rgba(45, 26, 17, 0.9);
+            border-bottom: 1px solid rgba(217, 119, 6, 0.3);
         }
 
-        /* Drunk Effect Blur */
+        /* Golden Glow Button Styles */
+        .btn-gold {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            border: 1px solid #fef08a;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+            transition: all 0.2s ease;
+        }
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            transform: translateY(-2deg);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+        }
+
+        /* Dynamic Drunk Screen Shake & Sway */
         .drunk-filter {
             transition: filter 0.5s ease, transform 0.5s ease;
         }
         .drunk-level-1 { filter: blur(0px); }
-        .drunk-level-2 { filter: blur(1px) contrast(105%); }
-        .drunk-level-3 { filter: blur(2.5px) hue-rotate(15deg); animation: sway 4s infinite ease-in-out; }
-        .drunk-level-4 { filter: blur(4px) hue-rotate(35deg); animation: sway 2s infinite ease-in-out; }
+        .drunk-level-2 { filter: blur(0.8px) contrast(105%); }
+        .drunk-level-3 { filter: blur(2px) hue-rotate(15deg); animation: sway 4s infinite ease-in-out; }
+        .drunk-level-4 { filter: blur(3.5px) hue-rotate(30deg); animation: sway 2s infinite ease-in-out; }
 
         @keyframes sway {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(1deg) scale(1.005); }
-            75% { transform: rotate(-1deg) scale(0.995); }
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(0.8deg) scale(1.008); }
+            75% { transform: rotate(-0.8deg) scale(0.992); }
         }
 
-        /* Flying Toast Notification Banner */
+        /* Toast Flying Notification Banner */
         @keyframes bannerSlide {
             0% { transform: translateY(-100%) scale(0.9); opacity: 0; }
             15% { transform: translateY(0) scale(1); opacity: 1; }
@@ -76,195 +89,206 @@
             100% { transform: translateY(-100%) scale(0.9); opacity: 0; }
         }
         .toast-banner {
-            animation: bannerSlide 4s ease-in-out forwards;
+            animation: bannerSlide 4.5s ease-in-out forwards;
+        }
+
+        .neon-title {
+            color: #fbbf24;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(217, 119, 6, 0.4);
         }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col justify-between overflow-hidden bg-slate-950 text-slate-100 relative p-2 sm:p-4">
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-slate-950 text-slate-100 relative">
 
-    <!-- Modal 0: LOGIN - CHỌN DANH TÍNH TÀI KHOẢN -->
+    <!-- MODAL ĐĂNG NHẬP CHỌN DANH TÍNH 7 CHIẾN HỮU -->
     <div id="loginModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-center relative overflow-hidden">
+        <div class="bg-slate-900 border-2 border-amber-500/70 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-center relative overflow-hidden">
             <div class="absolute -top-12 -left-12 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl"></div>
-            <h2 class="text-2xl font-black text-amber-400 neon-title uppercase mb-2">🍻 VÀO BÀN NHẬU THỨ 6 🍻</h2>
-            <p class="text-xs text-slate-300 mb-5">Chào mừng anh em! Hãy chọn danh tính của bạn để tham gia bàn nhậu realtime:</p>
+            <h2 class="text-2xl font-black text-amber-400 neon-title uppercase mb-1">🍻 VÀO BÀN NHẬU THỨ 6 🍻</h2>
+            <p class="text-xs text-slate-300 mb-5">Chào mừng anh em! Chọn tên chiến hữu để tham gia sảnh 3D Realtime:</p>
             
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4" id="loginUserButtons">
-                <!-- JS Populated Member Buttons -->
+                <!-- Populated via JS -->
             </div>
             
-            <p class="text-[11px] text-amber-500/70 italic">* Tất cả thành viên trong bàn sẽ thấy trực tiếp hành động cụm ly, rót bia & nhắn tin của bạn!</p>
+            <p class="text-[11px] text-amber-500/70 italic">* Hành động cụm ly, rót bia, thả đèn nguyện & chat sẽ hiển thị thời gian thực cho mọi chiến hữu!</p>
         </div>
     </div>
 
-    <!-- Banner Toast Notification Top Center -->
-    <div id="bannerContainer" class="absolute top-16 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none w-full max-w-xl flex flex-col items-center gap-2"></div>
+    <!-- TOP MARQUEE BANNER CHỮ CHẠY -->
+    <div class="marquee-container h-8 w-full overflow-hidden flex items-center relative z-40 text-amber-100 text-xs font-bold shadow-lg">
+        <div class="whitespace-nowrap marquee-text flex items-center gap-8">
+            <span>🍻 Chào mừng bạn đến QUÁN NHẬU ONLINE THỨ 6: Cùng nâng ly Zô 100%, trò chuyện vui vẻ, cầu chúc bình an. 🍺</span>
+            <span>🍻 Hội 7 Chiến hữu đang online nâng ly hết mình - Đã nhậu là không lái xe! 🍻</span>
+        </div>
+    </div>
 
-    <!-- Header Navigation -->
-    <header class="w-full bg-slate-950 px-3 py-2 flex items-center justify-between z-30 mb-2">
-        <!-- Current User Info (Góc trái) -->
-        <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-slate-900 border-2 border-yellow-500/80 flex items-center justify-center font-bold text-amber-300 text-sm shadow">
-                <span id="userAvatarBox">?</span>
+    <!-- MAIN 3D ISOMETRIC GAME CANVAS BACKGROUND -->
+    <div id="gameViewport" class="absolute inset-0 top-8 bottom-16 z-0 drunk-filter">
+        <canvas id="isometricCanvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+    </div>
+
+    <!-- UI LAYER 1: TOP LEFT USER STATS & PUB NAME -->
+    <div class="absolute top-11 left-4 z-30 flex flex-col gap-2">
+        <!-- User Badge Panel -->
+        <div class="chua-panel p-2.5 rounded-2xl flex items-center gap-3 border border-amber-500/40 shadow-xl min-w-[240px]">
+            <div class="relative">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-400 p-0.5 shadow-md">
+                    <div id="userAvatarBox" class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center font-black text-amber-300 text-lg">
+                        ?
+                    </div>
+                </div>
+                <span class="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 font-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center border border-slate-900 shadow">1</span>
             </div>
             <div>
-                <div class="flex items-center gap-2">
-                    <h2 class="font-extrabold text-amber-400 text-sm" id="currentUserNameDisplay">Chưa Đăng Nhập</h2>
-                    <button onclick="reopenLoginModal()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 transition">
-                        Đổi tên
-                    </button>
+                <div class="flex items-center gap-1.5">
+                    <h2 class="font-extrabold text-amber-300 text-sm leading-none" id="currentUserNameDisplay">Chưa chọn tên</h2>
+                    <button onclick="reopenLoginModal()" class="text-[10px] text-amber-400/80 hover:text-amber-200"><i class="fa-solid fa-pen"></i></button>
                 </div>
-                <div class="text-[11px] text-emerald-400 flex items-center gap-1 mt-0.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span id="syncStatusText">Đồng bộ Realtime Online</span>
+                <div class="text-[11px] text-amber-200/70 mt-1 flex items-center gap-2">
+                    <span>Tửu lượng: <strong id="drunkPercentText" class="text-emerald-400">0%</strong></span>
                 </div>
             </div>
         </div>
 
-        <!-- Center Title -->
-        <div class="flex flex-col items-center">
-            <h1 class="text-xl sm:text-2xl font-black text-amber-400 neon-title uppercase tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-beer-mug-empty text-yellow-400"></i> QUÁN NHẬU ONLINE THỨ 6
+        <!-- Pub Name & Status -->
+        <div class="chua-panel px-3 py-1.5 rounded-xl border border-amber-500/30 flex flex-col gap-0.5">
+            <h1 class="text-xs font-black text-amber-400 tracking-wider uppercase flex items-center gap-1.5">
+                <i class="fa-solid fa-beer-mug-empty text-yellow-400"></i> Quán Nhậu Vô Lượng
             </h1>
-            <p class="text-[11px] text-amber-200/70 italic font-medium">"Zô 100% - Không Say Không Về - Đã Nhậu Là Không Lái Xe"</p>
-        </div>
-
-        <!-- Mute Audio Toggle (Góc phải) -->
-        <div class="flex items-center gap-2">
-            <button onclick="toggleAudio()" id="audioToggleBtn" class="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-full border border-amber-500/40 text-xs font-bold flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-volume-high" id="audioIcon"></i>
-                <span>Âm thanh</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Pub Stage (Bàn nhậu ở trên) -->
-    <main id="mainScene" class="relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter mb-3">
-        <!-- Stage Title -->
-        <div class="text-center font-black text-amber-500/90 tracking-widest text-xs sm:text-sm uppercase mb-2">
-            🍺 BÀN NHẬU TRỰC TUYẾN HỘI ANH EM (7 CHIẾN HỮU)
-        </div>
-
-        <!-- Central Inner Wood Table -->
-        <div class="w-full flex-1 bg-amber-950/40 rounded-2xl inner-table-border p-4 flex flex-col items-center justify-center relative min-h-[220px] my-auto">
-            
-            <!-- Animated Interactive Beer Glass -->
-            <div class="relative flex flex-col items-center cursor-pointer group" onclick="actionCheers100()">
-                <!-- Large Glass SVG / Emoji -->
-                <div id="centerBeerGlass" class="text-6xl sm:text-7xl transition-all duration-300 transform group-hover:scale-110 drop-shadow-lg">
-                    🍺
-                </div>
-                <!-- Button attached on glass -->
-                <button class="mt-2 bg-slate-950/90 border border-amber-500/60 text-amber-300 font-bold px-3 py-1 rounded-full text-xs shadow-md group-hover:bg-amber-500 group-hover:text-slate-950 transition">
-                    Bấm để Cụm Ly Zô!
-                </button>
-                <span id="clinkTextEffect" class="absolute -top-8 text-yellow-300 font-extrabold text-sm opacity-0 transition-all pointer-events-none whitespace-nowrap neon-title">
-                    💥 ZÔ 100%! 💥
+            <div class="flex items-center gap-2 text-[11px]">
+                <span class="text-emerald-400 font-bold flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span id="onlineCountBadge">1 Online</span>
                 </span>
             </div>
+        </div>
+    </div>
 
-            <!-- Ordered Food Dishes / Empty notice -->
-            <div id="tableDishes" class="flex items-center justify-center gap-2 mt-4 flex-wrap text-amber-200/60 italic text-xs z-10">
-                <span id="emptyDishesText">(Bàn chưa có mồi, bấm "Gọi Mồi Ngon" bên dưới!)</span>
+    <!-- UI LAYER 2: TOP RIGHT CONTROLS -->
+    <div class="absolute top-11 right-4 z-30 flex items-center gap-2">
+        <button onclick="toggleAudio()" class="chua-panel px-3 py-1.5 rounded-full border border-amber-500/40 text-amber-400 hover:bg-amber-900/60 text-xs font-bold flex items-center gap-1">
+            <i class="fa-solid fa-volume-high" id="audioIcon"></i>
+            <span>Âm thanh</span>
+        </button>
+    </div>
+
+    <!-- UI LAYER 3: FLOATING CENTER TOAST BANNER -->
+    <div id="bannerContainer" class="absolute top-20 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none w-full max-w-lg flex flex-col items-center gap-2"></div>
+
+    <!-- UI LAYER 4: RIGHT PANEL - ĐÈN NGUYỆN / LỜI CHÚC & HỘI CHIẾN HỮU -->
+    <div class="absolute top-24 right-4 z-30 w-72 sm:w-80 chua-panel rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[62vh]">
+        <div class="chua-panel-header px-4 py-2.5 flex items-center justify-between border-b border-amber-500/30">
+            <div class="flex items-center gap-2">
+                <span class="w-4 h-4 rounded-full bg-amber-500 flex items-center justify-center text-[10px] text-slate-950 font-black">🕯</span>
+                <span class="font-extrabold text-amber-300 text-sm">Đèn Nguyện & Chiến Hữu</span>
             </div>
         </div>
 
-        <!-- Drunk Level Progress Bar at stage bottom -->
-        <div class="w-full mt-4 px-2">
-            <div class="flex justify-between text-xs font-bold text-amber-400 mb-1">
-                <span class="flex items-center gap-1"><i class="fa-solid fa-beer-mug-empty"></i> Tửu Lượng Bàn Nhậu:</span>
-                <span id="drunkPercentText" class="text-emerald-400">0% - Tỉnh Táo</span>
-            </div>
-            <div class="w-full bg-slate-900 h-2.5 rounded-full border border-amber-900 overflow-hidden">
-                <div id="drunkProgressBar" class="bg-gradient-to-r from-emerald-500 via-amber-400 to-red-600 h-full w-0 transition-all duration-500"></div>
-            </div>
+        <!-- Wish & Member Tab Navigation -->
+        <div class="flex items-center justify-around bg-slate-950/60 p-1 border-b border-amber-500/20 text-xs font-bold text-amber-300/80">
+            <button onclick="switchRightTab('wishes')" id="tabWishesBtn" class="px-3 py-1 rounded-lg bg-amber-600/40 text-amber-300 border border-amber-500/40">Đèn Nguyện</button>
+            <button onclick="switchRightTab('members')" id="tabMembersBtn" class="px-3 py-1 hover:text-amber-200">Hội Chiến Hữu (7)</button>
         </div>
-    </main>
 
-    <!-- Footer Split Grid (3 cột) -->
-    <footer class="w-full grid grid-cols-1 lg:grid-cols-12 gap-3 z-30">
-        
-        <!-- Cột 1: Hội chiến hữu (7) -->
-        <div class="lg:col-span-3 bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col h-48 sm:h-52">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
-                <div class="text-xs font-black text-amber-400 flex items-center gap-1.5">
-                    <i class="fa-solid fa-users"></i> Hội Chiến Hữu (7)
+        <!-- Wish List Container -->
+        <div id="wishListContainer" class="p-3 overflow-y-auto flex-1 space-y-2.5 text-xs">
+            <div class="bg-slate-900/80 border border-amber-500/30 p-2.5 rounded-xl flex flex-col gap-1">
+                <p class="font-bold text-amber-200 italic">"Chúc anh em bàn nhậu Thứ 6 luôn dồi dào sức khỏe!"</p>
+                <div class="flex items-center justify-between text-[11px] text-slate-400 mt-1">
+                    <span class="font-semibold text-amber-400/90">Chủ quán • Vừa xong</span>
+                    <button onclick="likeWish(this)" class="flex items-center gap-1 text-pink-400 hover:scale-110"><i class="fa-regular fa-heart"></i> <span>10</span></button>
                 </div>
-                <span class="text-[11px] text-emerald-400 font-bold" id="onlineCountBadge">● 1 Online</span>
-            </div>
-            <div id="memberListContainer" class="flex-1 overflow-y-auto space-y-1.5 pr-1 text-xs">
-                <!-- JS Populated 7 Members -->
             </div>
         </div>
 
-        <!-- Cột 2: Trò Chuyện Realtime -->
-        <div class="lg:col-span-5 bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col h-48 sm:h-52">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
-                <div class="text-xs font-black text-amber-400 flex items-center gap-1.5">
-                    <i class="fa-solid fa-comments"></i> Trò Chuyện Realtime
-                </div>
-                <span class="text-[10px] text-slate-400">Trực tiếp</span>
-            </div>
-            <div id="chatBox" class="flex-1 overflow-y-auto space-y-1.5 pr-1 text-xs">
-                <div class="text-slate-400 italic text-[11px]">Chủ quán: "Chào mừng các chiến hữu! Chọn tên để Zô 100% cùng bàn nhậu nào!"</div>
-            </div>
-            <form id="chatForm" onsubmit="sendChatMessage(event)" class="mt-2 flex gap-1.5">
-                <input type="text" id="chatInput" placeholder="Nhắn tin trò chuyện với bàn nhậu..." class="flex-1 bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-400">
-                <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-3.5 py-2 rounded-xl text-xs transition flex items-center justify-center">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </form>
+        <!-- Members Container (Hidden by default) -->
+        <div id="memberListContainer" class="p-3 overflow-y-auto flex-1 space-y-2 text-xs hidden">
+            <!-- JS Populated 7 Members -->
         </div>
 
-        <!-- Cột 3: Cụm nút bấm điều khiển -->
-        <div class="lg:col-span-4 grid grid-cols-2 gap-2 h-48 sm:h-52">
-            <!-- Nút CỤM LY 100% Cam Vàng Rực Rỡ -->
-            <button onclick="actionCheers100()" class="col-span-2 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-2xl p-3 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-98 transition border border-amber-300">
-                <i class="fa-solid fa-beer-mug-empty text-xl"></i>
-                <span class="text-sm tracking-wide uppercase">CỤM LY 100%</span>
+        <!-- Send Wish Button Bottom -->
+        <div class="p-2.5 bg-slate-950/80 border-t border-amber-500/30">
+            <button onclick="openSendWishModal()" class="w-full btn-gold py-2 rounded-xl text-slate-950 font-black text-xs flex items-center justify-center gap-2 uppercase">
+                <i class="fa-solid fa-fire text-amber-950"></i> Thả Đèn Nguyện Bàn Nhậu
+            </button>
+        </div>
+    </div>
+
+    <!-- UI LAYER 5: LEFT BOTTOM PANEL - CHAT REALTIME SÂN CHÙA -->
+    <div class="absolute bottom-20 left-4 z-30 w-72 sm:w-80 chua-panel rounded-2xl overflow-hidden shadow-2xl flex flex-col h-56">
+        <div class="chua-panel-header px-3 py-1.5 flex items-center justify-between">
+            <span class="font-extrabold text-amber-300 text-xs"><i class="fa-solid fa-comments"></i> Chat Realtime Bàn Nhậu</span>
+            <span class="text-[10px] text-emerald-400">Trực tiếp</span>
+        </div>
+
+        <div id="chatBox" class="p-2.5 overflow-y-auto flex-1 space-y-1.5 text-xs">
+            <div class="text-slate-400 italic text-[11px]">Chủ quán: "Chọn tên chiến hữu để bắt đầu Zô 100%!"</div>
+        </div>
+
+        <form id="chatForm" onsubmit="sendChatMessage(event)" class="p-2 bg-slate-950/90 border-t border-amber-500/20 flex gap-1.5">
+            <input type="text" id="chatInput" placeholder="Trò chuyện thời gian thực..." class="flex-1 bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-1.5 text-slate-200 focus:outline-none focus:border-amber-400">
+            <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-black px-3 py-1.5 rounded-xl text-xs transition">Gửi</button>
+        </form>
+    </div>
+
+    <!-- UI LAYER 6: BOTTOM ACTION BAR -->
+    <footer class="absolute bottom-0 inset-x-0 h-16 z-40 bg-slate-950/95 border-t border-amber-500/40 px-3 flex items-center justify-between gap-2 overflow-x-auto">
+        <!-- Quick Action Buttons -->
+        <div class="flex items-center gap-2">
+            <!-- Action 1: CỤM LY 100% -->
+            <button onclick="actionCheers100()" class="btn-gold px-4 py-2 rounded-xl text-slate-950 font-black text-xs flex items-center gap-2 uppercase">
+                <i class="fa-solid fa-beer-mug-empty text-base"></i>
+                <span>Cụm Ly 100%</span>
             </button>
 
-            <!-- Nút Rót Đầy Bia -->
-            <button onclick="actionPourBeer()" class="bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-amber-400 font-bold rounded-2xl p-2 flex flex-col items-center justify-center text-xs active:scale-95 transition">
-                <i class="fa-solid fa-bottle-droplet text-amber-400 text-base mb-1"></i>
-                <span>Rót Đầy Bia</span>
+            <!-- Action 2: Rót Bia -->
+            <button onclick="actionPourBeer()" class="flex flex-col items-center justify-center w-14 h-12 rounded-xl bg-amber-950/80 hover:bg-amber-900 border border-amber-500/50 text-amber-300 transition active:scale-95">
+                <i class="fa-solid fa-bottle-droplet text-base"></i>
+                <span class="text-[10px] font-bold mt-0.5">Rót Bia</span>
             </button>
 
-            <!-- Nút Gọi Mồi Ngon -->
-            <button onclick="openFoodModal()" class="bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-amber-400 font-bold rounded-2xl p-2 flex flex-col items-center justify-center text-xs active:scale-95 transition">
-                <i class="fa-solid fa-utensils text-amber-400 text-base mb-1"></i>
-                <span>Gọi Mồi Ngon</span>
+            <!-- Action 3: Gọi Mồi -->
+            <button onclick="openFoodModal()" class="flex flex-col items-center justify-center w-14 h-12 rounded-xl bg-amber-950/80 hover:bg-amber-900 border border-amber-500/50 text-amber-300 transition active:scale-95">
+                <i class="fa-solid fa-utensils text-base"></i>
+                <span class="text-[10px] font-bold mt-0.5">Gọi Mồi</span>
             </button>
 
-            <!-- Nút Bật Karaoke Bàn Nhậu -->
-            <button onclick="openKaraokeModal()" class="col-span-2 bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-pink-400 font-bold rounded-2xl p-2.5 flex items-center justify-center gap-2 text-xs active:scale-98 transition">
-                <i class="fa-solid fa-microphone-lines text-pink-400 text-sm"></i>
-                <span>Bật Karaoke Bàn Nhậu</span>
+            <!-- Action 4: Karaoke -->
+            <button onclick="openKaraokeModal()" class="flex flex-col items-center justify-center w-14 h-12 rounded-xl bg-amber-950/80 hover:bg-amber-900 border border-amber-500/50 text-pink-400 transition active:scale-95">
+                <i class="fa-solid fa-microphone-lines text-base"></i>
+                <span class="text-[10px] font-bold mt-0.5">Karaoke</span>
+            </button>
+        </div>
+
+        <div class="flex items-center gap-1">
+            <button onclick="reopenLoginModal()" class="bg-slate-900 border border-amber-500/40 text-amber-300 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-amber-900/40">
+                Đổi Tên
             </button>
         </div>
     </footer>
 
-    <!-- MODAL 1: GỌI MỒI MENU -->
+    <!-- MODAL GỌI MỒI -->
     <div id="foodModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
+        <div class="chua-panel border-2 border-amber-500/60 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
             <button onclick="closeModal('foodModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             <h3 class="text-lg font-extrabold text-amber-400 flex items-center gap-2 mb-4">
                 <i class="fa-solid fa-utensils"></i> Thực Đơn Mồi Nhắm Bén (Đồng Bộ Bàn)
             </h3>
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="actionOrderFood('Lẩu Thái Chua Cay', '🍲')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
+                <button onclick="actionOrderFood('Lẩu Thái Chua Cay', '🍲')" class="bg-slate-900 hover:bg-amber-950 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
                     <span class="text-3xl mb-1">🍲</span>
                     <span class="text-xs font-bold text-amber-200">Lẩu Thái Chua Cay</span>
                 </button>
-                <button onclick="actionOrderFood('Bò Nướng Tảng', '🥩')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
+                <button onclick="actionOrderFood('Bò Nướng Tảng', '🥩')" class="bg-slate-900 hover:bg-amber-950 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
                     <span class="text-3xl mb-1">🥩</span>
                     <span class="text-xs font-bold text-amber-200">Bò Nướng Tảng</span>
                 </button>
-                <button onclick="actionOrderFood('Đậu Hũ Lướt Ván', '🧈')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
+                <button onclick="actionOrderFood('Đậu Hũ Lướt Ván', '🧈')" class="bg-slate-900 hover:bg-amber-950 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
                     <span class="text-3xl mb-1">🧈</span>
                     <span class="text-xs font-bold text-amber-200">Đậu Hũ Lướt Ván</span>
                 </button>
-                <button onclick="actionOrderFood('Chân Gà Sả Tắc', '🐓')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
+                <button onclick="actionOrderFood('Chân Gà Sả Tắc', '🐓')" class="bg-slate-900 hover:bg-amber-950 border border-slate-700 p-3 rounded-2xl flex flex-col items-center text-center">
                     <span class="text-3xl mb-1">🐓</span>
                     <span class="text-xs font-bold text-amber-200">Chân Gà Sả Tắc</span>
                 </button>
@@ -272,23 +296,23 @@
         </div>
     </div>
 
-    <!-- MODAL 2: KARAOKE -->
+    <!-- MODAL KARAOKE -->
     <div id="karaokeModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border-2 border-pink-500/60 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
+        <div class="chua-panel border-2 border-pink-500/60 rounded-3xl max-w-md w-full p-5 shadow-2xl relative">
             <button onclick="closeModal('karaokeModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             <h3 class="text-lg font-extrabold text-pink-400 flex items-center gap-2 mb-3">
                 <i class="fa-solid fa-microphone-lines"></i> Chọn Bài Hát Karaoke
             </h3>
             <div class="space-y-2">
-                <button onclick="actionSingKaraoke('Hãy Ra Đây Uống Cùng Anh')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
+                <button onclick="actionSingKaraoke('Hãy Ra Đây Uống Cùng Anh')" class="w-full bg-slate-900 hover:bg-slate-800 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
                     <span class="text-xs font-bold text-pink-300">1. Hãy Ra Đây Uống Cùng Anh</span>
                     <i class="fa-solid fa-play text-pink-400"></i>
                 </button>
-                <button onclick="actionSingKaraoke('Nối Lại Tình Xưa (Phiên bản Bàn Nhậu)')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
+                <button onclick="actionSingKaraoke('Nối Lại Tình Xưa')" class="w-full bg-slate-900 hover:bg-slate-800 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
                     <span class="text-xs font-bold text-pink-300">2. Nối Lại Tình Xưa</span>
                     <i class="fa-solid fa-play text-pink-400"></i>
                 </button>
-                <button onclick="actionSingKaraoke('Say Tình - Đàm Vĩnh Hưng')" class="w-full bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
+                <button onclick="actionSingKaraoke('Say Tình - Đàm Vĩnh Hưng')" class="w-full bg-slate-900 hover:bg-slate-800 p-3 rounded-xl border border-pink-500/30 text-left flex items-center justify-between">
                     <span class="text-xs font-bold text-pink-300">3. Say Tình</span>
                     <i class="fa-solid fa-play text-pink-400"></i>
                 </button>
@@ -296,7 +320,21 @@
         </div>
     </div>
 
-    <!-- Realtime Engine & Multi-channel Sync Logic -->
+    <!-- MODAL THẢ ĐÈN NGUYỆN -->
+    <div id="sendWishModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="chua-panel rounded-3xl max-w-md w-full p-5 relative border-2 border-amber-500/60 shadow-2xl">
+            <button onclick="closeModal('sendWishModal')" class="absolute top-4 right-4 text-amber-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-lg font-black text-amber-300 uppercase mb-3 flex items-center gap-2">
+                <span>🕯 Thả Đèn Nguyện Bàn Nhậu</span>
+            </h3>
+            <textarea id="wishTextInput" rows="3" placeholder="Nhập lời ước nguyện hoặc lời thách rượu gửi tới bàn nhậu..." class="w-full bg-slate-900 border border-amber-500/40 rounded-xl p-3 text-xs text-amber-100 focus:outline-none focus:border-amber-400 mb-3"></textarea>
+            <button onclick="submitWish()" class="w-full btn-gold py-2 rounded-xl text-slate-950 font-black text-xs uppercase">
+                🚀 Thả Đèn Lên Sảnh Nhậu
+            </button>
+        </div>
+    </div>
+
+    <!-- REALTIME & GAME ENGINE SCRIPT -->
     <script>
         const FIXED_MEMBERS = [
             "Thanh Quí", "Quang Hoà", "Lê Hoàng", 
@@ -311,26 +349,19 @@
             memberStates[name] = { drunk: 0, online: false };
         });
 
-        // 1. BroadcastChannel Engine (Instant Tab-to-Tab Sync)
+        // BroadcastChannel, WebSocket & Firebase Multi-Engine Sync
         const broadcastChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('quan_nhau_online_sync') : null;
-
-        // 2. WebSocket Relay Fallback Engine
         let socketEngine = null;
-        try {
-            socketEngine = new WebSocket('wss://free.chatws.com');
-        } catch(e) {}
+        try { socketEngine = new WebSocket('wss://free.chatws.com'); } catch(e) {}
 
-        // 3. Firebase Database Engine
-        const firebaseConfig = {
-            databaseURL: "https://quan-nhau-online-default-rtdb.asia-southeast1.firebasedatabase.app"
-        };
+        const firebaseConfig = { databaseURL: "https://quan-nhau-online-default-rtdb.asia-southeast1.firebasedatabase.app" };
         let db = null;
         try {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
         } catch (e) {}
 
-        // Web Audio Synthesizer FX
+        // Web Audio Synthesizer
         const AudioEngine = {
             ctx: null,
             init() {
@@ -343,8 +374,8 @@
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(2200, now);
-                osc.frequency.exponentialRampToValueAtTime(1100, now + 0.15);
+                osc.frequency.setValueAtTime(2400, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
                 gain.gain.setValueAtTime(0.5, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
                 osc.connect(gain);
@@ -371,10 +402,95 @@
             }
         };
 
+        // 3D Isometric Canvas Game Engine
+        const canvas = document.getElementById('isometricCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function isoToScreen(isoX, isoY) {
+            const tileWidth = 100;
+            const tileHeight = 50;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2 + 20;
+
+            const screenX = centerX + (isoX - isoY) * (tileWidth / 2);
+            const screenY = centerY + (isoX + isoY) * (tileHeight / 2);
+            return { x: screenX, y: screenY };
+        }
+
+        let animFrame = 0;
+        function renderIsometricScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            animFrame++;
+
+            // Ground Tiles Grid
+            const gridSize = 4;
+            for (let x = -gridSize; x <= gridSize; x++) {
+                for (let y = -gridSize; y <= gridSize; y++) {
+                    const pos = isoToScreen(x, y);
+                    ctx.beginPath();
+                    ctx.moveTo(pos.x, pos.y - 25);
+                    ctx.lineTo(pos.x + 50, pos.y);
+                    ctx.lineTo(pos.x, pos.y + 25);
+                    ctx.lineTo(pos.x - 50, pos.y);
+                    ctx.closePath();
+                    ctx.fillStyle = (x + y) % 2 === 0 ? '#1e1b2e' : '#171426';
+                    ctx.fill();
+                    ctx.strokeStyle = '#2d2640';
+                    ctx.stroke();
+                }
+            }
+
+            // Central Wooden Tavern Table
+            const tablePos = isoToScreen(0, 0);
+            ctx.beginPath();
+            ctx.ellipse(tablePos.x, tablePos.y - 15, 60, 30, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#5c3517';
+            ctx.fill();
+            ctx.strokeStyle = '#b45309';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Characters on Table
+            const isoCoords = [
+                {x: 0, y: -2}, {x: 2, y: -1}, {x: 2, y: 1}, 
+                {x: 0, y: 2}, {x: -2, y: 1}, {x: -2, y: -1}, {x: 1, y: -2}
+            ];
+
+            FIXED_MEMBERS.forEach((name, idx) => {
+                const coord = isoCoords[idx % isoCoords.length];
+                const p = isoToScreen(coord.x, coord.y);
+                const st = memberStates[name] || { drunk: 0, online: false };
+                const bounceY = st.online ? Math.abs(Math.sin(animFrame * 0.1 + idx)) * 4 : 0;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y - 35 - bounceY, 15, 0, Math.PI * 2);
+                ctx.fillStyle = name === currentUser ? '#f59e0b' : (st.online ? '#10b981' : '#475569');
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = st.online ? '#fef08a' : '#94a3b8';
+                ctx.font = 'bold 11px Lexend';
+                ctx.textAlign = 'center';
+                ctx.fillText(name, p.x, p.y - 58 - bounceY);
+            });
+
+            requestAnimationFrame(renderIsometricScene);
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             initLoginButtons();
             renderMembersUI();
             setupRealtimeListeners();
+            renderIsometricScene();
         });
 
         function initLoginButtons() {
@@ -398,7 +514,7 @@
             document.getElementById('userAvatarBox').innerText = currentUser.charAt(0);
 
             dispatchRealtimeEvent('JOIN', { author: currentUser, text: `vừa gia nhập bàn nhậu!` });
-            
+
             if (db) {
                 const userRef = db.ref('presence/' + currentUser);
                 userRef.set({ name: currentUser, online: true, drunk: memberStates[currentUser].drunk });
@@ -419,26 +535,22 @@
         function renderMembersUI() {
             const container = document.getElementById('memberListContainer');
             container.innerHTML = '';
-            
-            let totalDrunk = 0;
             let onlineCount = 0;
 
             FIXED_MEMBERS.forEach(name => {
                 const st = memberStates[name] || { drunk: 0, online: false };
                 if (st.online) onlineCount++;
-                totalDrunk += st.drunk;
 
                 const isMe = name === currentUser;
                 const card = document.createElement('div');
                 card.className = `p-2 rounded-xl border ${isMe ? 'bg-amber-500/10 border-amber-500/60' : 'bg-slate-900/60 border-slate-800'} flex items-center justify-between`;
-                
                 card.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-full bg-slate-800 border ${st.online ? 'border-emerald-400 text-emerald-300' : 'border-slate-700 text-slate-500'} flex items-center justify-center font-bold text-xs">
+                        <div class="w-6 h-6 rounded-full bg-slate-800 border ${st.online ? 'border-emerald-400 text-emerald-300' : 'border-slate-700 text-slate-500'} flex items-center justify-center font-bold text-xs">
                             ${name.charAt(0)}
                         </div>
                         <div>
-                            <div class="font-extrabold text-xs ${isMe ? 'text-amber-400' : 'text-slate-200'}">${name}</div>
+                            <div class="font-bold text-xs ${isMe ? 'text-amber-400' : 'text-slate-200'}">${name}</div>
                             <div class="text-[10px] ${st.online ? 'text-emerald-400' : 'text-slate-500'}">${st.online ? '● Đang nhậu' : '○ Vắng mặt'}</div>
                         </div>
                     </div>
@@ -447,36 +559,24 @@
                 container.appendChild(card);
             });
 
-            document.getElementById('onlineCountBadge').innerText = `● ${onlineCount} Online`;
-            
-            const avgDrunk = Math.min(100, Math.floor(totalDrunk / FIXED_MEMBERS.length));
-            document.getElementById('drunkProgressBar').style.width = avgDrunk + '%';
-            document.getElementById('drunkPercentText').innerText = `${avgDrunk}% - ${avgDrunk > 50 ? 'Say Phê Phê' : 'Tỉnh Táo'}`;
+            document.getElementById('onlineCountBadge').innerText = `${onlineCount} Online`;
 
             if (currentUser && memberStates[currentUser]) {
                 const myDrunk = memberStates[currentUser].drunk;
-                const scene = document.getElementById('mainScene');
-                if (myDrunk > 70) scene.className = "relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter drunk-level-4 mb-3";
-                else if (myDrunk > 40) scene.className = "relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter drunk-level-3 mb-3";
-                else if (myDrunk > 20) scene.className = "relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter drunk-level-2 mb-3";
-                else scene.className = "relative flex-1 bg-slate-950 rounded-2xl stage-border p-4 sm:p-6 flex flex-col justify-between overflow-hidden drunk-filter drunk-level-1 mb-3";
+                document.getElementById('drunkPercentText').innerText = `${myDrunk}%`;
+                const viewport = document.getElementById('gameViewport');
+                if (myDrunk > 70) viewport.className = "absolute inset-0 top-8 bottom-16 z-0 drunk-filter drunk-level-4";
+                else if (myDrunk > 40) viewport.className = "absolute inset-0 top-8 bottom-16 z-0 drunk-filter drunk-level-3";
+                else if (myDrunk > 20) viewport.className = "absolute inset-0 top-8 bottom-16 z-0 drunk-filter drunk-level-2";
+                else viewport.className = "absolute inset-0 top-8 bottom-16 z-0 drunk-filter drunk-level-1";
             }
         }
 
-        // Multi-channel Realtime Broadcaster
         function dispatchRealtimeEvent(type, payload) {
             const data = { type, payload, timestamp: Date.now() };
-
             if (broadcastChannel) broadcastChannel.postMessage(data);
-
-            if (socketEngine && socketEngine.readyState === WebSocket.OPEN) {
-                socketEngine.send(JSON.stringify(data));
-            }
-
-            if (db) {
-                db.ref('pub_events').push(data);
-            }
-
+            if (socketEngine && socketEngine.readyState === WebSocket.OPEN) socketEngine.send(JSON.stringify(data));
+            if (db) db.ref('pub_events').push(data);
             handleRealtimeEvent(data);
         }
 
@@ -525,34 +625,31 @@
             const { type, payload } = data;
             const author = payload.author || "Chiến hữu";
 
-            if (memberStates[author]) {
-                memberStates[author].online = true;
-            }
+            if (memberStates[author]) memberStates[author].online = true;
 
             if (type === 'CHEERS') {
                 AudioEngine.playClink();
-                triggerClinkEffect(author);
                 addChatMessage(author, "vừa CỤM LY ZÔ 100%! 💥🍻");
-                showBannerToast(`💥 ${author} vừa cụm ly ZÔ 100%!`);
-                
-                if (memberStates[author]) {
-                    memberStates[author].drunk = Math.min(100, memberStates[author].drunk + 15);
-                }
+                showToastBanner(`💥 ${author} vừa cụm ly ZÔ 100%!`);
+                if (memberStates[author]) memberStates[author].drunk = Math.min(100, memberStates[author].drunk + 15);
                 renderMembersUI();
             }
             else if (type === 'POUR') {
                 AudioEngine.playPour();
-                addChatMessage(author, "vừa rót đầy tràn bọt ly bia mát lạnh! 🍺");
-                showBannerToast(`🍺 ${author} vừa rót đầy ly bia!`);
+                addChatMessage(author, "vừa rót đầy bọt ly bia mát lạnh! 🍺");
+                showToastBanner(`🍺 ${author} vừa rót đầy ly bia!`);
             }
             else if (type === 'FOOD') {
-                renderFoodOnTable(payload.foodName, payload.emoji);
                 addChatMessage(author, `gọi món [${payload.emoji} ${payload.foodName}] lên bàn nhậu!`);
-                showBannerToast(`🍲 ${author} vừa gọi món ${payload.foodName}!`);
+                showToastBanner(`🍲 ${author} vừa gọi món ${payload.foodName}!`);
             }
             else if (type === 'KARAOKE') {
-                addChatMessage(author, `🎵 (Karaoke): "${payload.songName}"`);
-                showBannerToast(`🎤 ${author} đang hát Karaoke bài: "${payload.songName}"`);
+                addChatMessage(author, `🎵 Karaoke: "${payload.songName}"`);
+                showToastBanner(`🎤 ${author} đang hát bài: "${payload.songName}"`);
+            }
+            else if (type === 'WISH') {
+                addWishCard(author, payload.text);
+                showToastBanner(`🕯 ${author} vừa thả đèn nguyện lên sảnh!`);
             }
             else if (type === 'CHAT') {
                 addChatMessage(author, payload.text);
@@ -589,6 +686,31 @@
             dispatchRealtimeEvent('KARAOKE', { author: currentUser, songName });
         }
 
+        function submitWish() {
+            if (!currentUser) return reopenLoginModal();
+            const input = document.getElementById('wishTextInput');
+            const text = input.value.trim();
+            if (text) {
+                dispatchRealtimeEvent('WISH', { author: currentUser, text });
+                input.value = '';
+                closeModal('sendWishModal');
+            }
+        }
+
+        function addWishCard(author, text) {
+            const container = document.getElementById('wishListContainer');
+            const card = document.createElement('div');
+            card.className = 'bg-slate-900/80 border border-amber-500/30 p-2.5 rounded-xl flex flex-col gap-1 animate-bounce';
+            card.innerHTML = `
+                <p class="font-bold text-amber-200 italic">"${text}"</p>
+                <div class="flex items-center justify-between text-[11px] text-slate-400 mt-1">
+                    <span class="font-semibold text-amber-400/90">${author} • Vừa xong</span>
+                    <button onclick="likeWish(this)" class="flex items-center gap-1 text-pink-400"><i class="fa-regular fa-heart"></i> <span>0</span></button>
+                </div>
+            `;
+            container.prepend(card);
+        }
+
         function sendChatMessage(e) {
             e.preventDefault();
             if (!currentUser) return reopenLoginModal();
@@ -600,61 +722,58 @@
             }
         }
 
-        function triggerClinkEffect(author) {
-            const glass = document.getElementById('centerBeerGlass');
-            const txt = document.getElementById('clinkTextEffect');
-            
-            glass.classList.add('clink-animate');
-            txt.innerText = `💥 ${author} ZÔ 100%! 💥`;
-            txt.style.opacity = '1';
-
-            setTimeout(() => {
-                glass.classList.remove('clink-animate');
-                txt.style.opacity = '0';
-            }, 600);
-        }
-
-        function renderFoodOnTable(foodName, emoji) {
-            const container = document.getElementById('tableDishes');
-            const emptyText = document.getElementById('emptyDishesText');
-            if (emptyText) emptyText.remove();
-
-            const dish = document.createElement('div');
-            dish.className = 'bg-slate-950 border border-amber-500/50 px-3 py-1 rounded-full text-xs flex items-center gap-1 shadow-lg animate-bounce';
-            dish.innerHTML = `<span>${emoji}</span> <span class="text-amber-300 font-bold">${foodName}</span>`;
-            container.appendChild(dish);
-        }
-
-        function showBannerToast(msg) {
-            const container = document.getElementById('bannerContainer');
-            const banner = document.createElement('div');
-            banner.className = 'toast-banner bg-amber-500/95 border border-amber-300 text-slate-950 font-black px-4 py-2 rounded-2xl shadow-2xl text-xs sm:text-sm backdrop-blur-md flex items-center gap-2';
-            banner.innerHTML = `<i class="fa-solid fa-beer-mug-empty text-amber-950"></i> <span>${msg}</span>`;
-            
-            container.appendChild(banner);
-            setTimeout(() => banner.remove(), 4000);
-        }
-
         function addChatMessage(author, text) {
             const chatBox = document.getElementById('chatBox');
             const msgEl = document.createElement('div');
             msgEl.className = 'text-xs leading-relaxed';
-            
             const isMe = author === currentUser;
             const nameColor = isMe ? 'text-yellow-400 font-bold' : 'text-amber-300 font-semibold';
-            
             msgEl.innerHTML = `<span class="${nameColor}">${author}:</span> <span class="text-slate-200">${text}</span>`;
             chatBox.appendChild(msgEl);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
+        function showToastBanner(msg) {
+            const container = document.getElementById('bannerContainer');
+            const banner = document.createElement('div');
+            banner.className = 'toast-banner bg-amber-500/95 border border-amber-300 text-slate-950 font-black px-4 py-2 rounded-2xl shadow-2xl text-xs backdrop-blur-md flex items-center gap-2';
+            banner.innerHTML = `<i class="fa-solid fa-beer-mug-empty text-amber-950"></i> <span>${msg}</span>`;
+            container.appendChild(banner);
+            setTimeout(() => banner.remove(), 4500);
+        }
+
+        function switchRightTab(tab) {
+            const wishesContainer = document.getElementById('wishListContainer');
+            const membersContainer = document.getElementById('memberListContainer');
+            const wishesBtn = document.getElementById('tabWishesBtn');
+            const membersBtn = document.getElementById('tabMembersBtn');
+
+            if (tab === 'wishes') {
+                wishesContainer.classList.remove('hidden');
+                membersContainer.classList.add('hidden');
+                wishesBtn.className = "px-3 py-1 rounded-lg bg-amber-600/40 text-amber-300 border border-amber-500/40";
+                membersBtn.className = "px-3 py-1 hover:text-amber-200";
+            } else {
+                wishesContainer.classList.add('hidden');
+                membersContainer.classList.remove('hidden');
+                membersBtn.className = "px-3 py-1 rounded-lg bg-amber-600/40 text-amber-300 border border-amber-500/40";
+                wishesBtn.className = "px-3 py-1 hover:text-amber-200";
+            }
+        }
+
         function openFoodModal() { document.getElementById('foodModal').classList.remove('hidden'); }
         function openKaraokeModal() { document.getElementById('karaokeModal').classList.remove('hidden'); }
+        function openSendWishModal() { document.getElementById('sendWishModal').classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
         function toggleAudio() {
             audioEnabled = !audioEnabled;
             document.getElementById('audioIcon').className = audioEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+        }
+
+        function likeWish(btn) {
+            const countSpan = btn.querySelector('span');
+            countSpan.innerText = parseInt(countSpan.innerText) + 1;
         }
     </script>
 </body>
